@@ -1,0 +1,1463 @@
+\documentclass[12pt]{extreport}
+
+\usepackage[latin1]{inputenc} % permet d'utliser tous les caractères du clavier
+\usepackage[T1]{fontenc}      % de même
+\usepackage[francais]{babel}  % dit qu'on écrit en français 
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage{paralist}
+\usepackage{enumitem}
+\usepackage{mathrsfs}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+
+\theoremstyle{plain}
+\newtheorem{theoreme}{Théorème}[section]
+\newtheorem{lemme}[theoreme]{Lemme}
+\newtheorem{corollaire}[theoreme]{Corollaire}
+\newtheorem{proposition}[theoreme]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theoreme]{Définition}
+\newtheorem*{demonstration}{Démonstration}
+
+\theoremstyle{remark}
+\newtheorem*{remarque}{Remarque}
+
+\apptocmd{\thebibliography}{\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{\bibname}}{}{}
+\allowdisplaybreaks%%%%%
+\title{Méthode de couplage pour la résolution du théorème de Liouville pour le Laplacien Fractionnaire}
+\author{Michael Hédi Ben Ali}
+\begin{document}
+
+\tableofcontents
+\pagestyle{fancy}
+
+\renewcommand{\chaptermark}[1]{%
+\markboth{\chaptername \,
+ \thechapter\ }{}}
+
+\newcommand{\prodscal}[2]{\left\langle#1,#2\right\rangle}
+\chapter*{Introduction}
+\markboth{\MakeUppercase{Introduction}}{}
+\addcontentsline{toc}{chapter}{Introduction}
+Le théorème de Liouville prend ses origines dans l'analyse complexe et énonce que toute fonction $f:\mathbb{C}\rightarrow\mathbb{C}$ holomorphe bornée est nécessairement constante sur $\mathbb{C}$. En analysant la partie réelle des fonctions holomorphes, nous en déduisons que les constantes sont les seules fonctions $f:\mathbb{R}^{2}\rightarrow\mathbb{R}$ deux fois différentiables  vérifiant pour tout $(x_{1},x_{2})\in\mathbb{R}^{2}$,
+$$\frac{\partial^{2}f}{\partial x_{1}^{2}}(x_{1},x_{2})+\frac{\partial^{2}f}{\partial x_{2}^{2}}(x_{1},x_{2})=0.$$
+
+D'une façon plus générale, il est bien connu que (Voir par exemple \cite{ref7}) que le théorème de Liouville a lieu pour les fonctions $\Delta$-harmoniques sur $\mathbb{R}^{d}$. Plus précisement, pour tout entier $d\geq 1$ et pour toute fonction bornée $f:\mathbb{R}^{d}\rightarrow\mathbb{R}$ de classe $C^{2}$, si 
+$$\Delta f:= \sum\limits_{i=1}^{d}\frac{\partial^{2}}{\partial x_{i}^{2}}f$$
+est identiquement nulle, alors $f$ est constante sur $\mathbb{R}^{d}$.
+\newline
+
+Dans plusieurs ouvrage (voir \cite{ref7,ref21}), une étude détaillée des fonctions $\Delta$-harmoniques a été développée en utilisant des outils analytiques (théorie du potentiel, analyse harmonique, EDP ...etc.). Il est connu que $$\Delta f(x)=\lim_{t\rightarrow0} \frac{\mathbb{E}(f(B_{t})|B_{0}=x)-f(x)}{t}$$
+pour tout $x\in\mathbb{R}^{d}$ et pour toute fonction $f:\mathbb{R}^{d}\rightarrow \mathbb{R}$ de classe $C^{2}$ telle que cette limite existe et où $(B_{t})_{t\geq0}$ est le mouvement brownien d-dimensionel défini sur l'espace de probabilité filtré $(\Omega,\mathcal{F},(\mathcal{F})_{t\geq0},\mathbb{P})$. En particulier, il est démontré que toute fonction $f:\mathbb{R}^{d}\rightarrow \mathbb{R}$ borélienne localement bornée est $\Delta$-harmonique sur $\mathbb{R}^{d}$ si et seulement si pour tout $x\in\mathbb{R}^{d}$ et pour tout réel $r>0$,
+$$f(x)=\mathbb{E}(f(B_{\tau_{x,r}})|B_{0}=x)$$
+où $\tau_{x,r}=\inf\left\{t>0; B_{t}\notin B(x,r)\right\}$ est le premier temps de sortie de la boule ouverte $B(x,r)$ de centre $x$ et de rayon $r$. Tout ceci a , entre autre, permi de dévelloppée une étude des fonctions $\Delta$-harmoniques basée sur des outils probabilistes (voir par exemple \cite{ref20,21}). 
+\newline
+
+Dans notre travail, nous considérerons un processus de Lévy $X=(X_{t})_{t\geq0}$. On dit qu'une fonction $f:\mathbb{R}^{d} \rightarrow \mathbb{R}$ suffisament régulière est X-harmonique sur $\mathbb{R}^{d}$ si pour tout $x\in\mathbb{R}^{d}$
+$$\lim_{t\rightarrow 0}\frac{\mathbb{E}_{x}(f(X_{t}))-f(x)} {t}=0.$$
+Le but de ce mémoire est d'analyser si la propriété de liouville à lieu pour les fonctions $X$-harmoniques. En particulier, nous allons nous intéresser aux  processus de Lévy $\alpha$-stables invariant par rotation à valeurs dans $\mathbb{R}^{d}$ où $0<\alpha\leq 2$. On signale que le mouvement brownien est le processus $2$-stable invariant. Supposons maintenant que $(X_{t})_{t\geq}$ est le processus $\alpha$-stable invariant par rotation où $0<\alpha<2$. On appelle laplacien fractionnaire l'opérateur définie par 
+$$\Delta^{\alpha/2}f= \lim_{t\rightarrow 0}\frac{\mathbb{E}_{x}(f(X_{t}))-f(x)} {t}$$
+pour tout $x\in\mathbb{R}^{d}$ et toute fonction $f:\mathbb{R}^{d}\rightarrow\mathbb{R}$ telle que cette limite existe. Les fonctions $\alpha$-harmoniques sur $\mathbb{R}^{d}$ sont les fonctions dont le laplacien fractionnaire est nul sur $\mathbb{R}^{d}$. W.Chen, X.Cui, Z.Yuan et R.Zhuo \cite{ref9} ont montré par une méthode analytique que le laplacien fractionnaire possède la propriété de Liouville. Nous allons proposer dans notre travail une méthode probabiliste pour vérifier se résultat. 
+\newline
+
+La méthode proposée ici est basée sur la propriété de couplage des processus de Lévy (voir \cite{ref15}). Pour tout processus de Lévy $(X_{t})_{t\geq0}$ et pour tous $x$, $y \in \mathbb{R}^{d}$, on définit les processus $(X^{x}_{t})_{t\geq0}$ et $(X^{y}_{t})_{t\geq0}$ issus respectivement de $x$ et $y$ possèdant les mêmes lois de transition que $(X_{t})_{t\geq0}$. On dit que $(X_{t})_{t\geq0}$ possède la propriété de couplage si pour tous $x, y \in \mathbb{R}^{d}$ le temps d'arrêt $$T_{x,y} =\inf\left\{t>0; X^{x}_{t}=X^{y}_{t}\right\}< \infty.$$ 
+Un processus possèdant la propriété de couplage vérifie la propriété de Liouville (voir \cite{ref15}). Il nous suffira alors de montrer que la propriété de couplage à lieu pour le processus $\alpha$-stable invariant par rotation. Dans un cadre plus générale, R.Schilling et J.Wang \cite{ref12} ont donnés dans leur article des conditions suffisantes pour qu'un processus de Lévy possède la propriété de couplage. Nous énoncerons, en complement de notre travail, quelques-uns de leurs résultats. 
+\newline
+
+Notre mémoire sera organisé comme suit: nous commencerons dans le premier chapitre par parler des semi-groupes associés aux processus de Markov. Dans ce chapitre, nous rappelerons quelques propriétés sur les semi-groupes qui permettrons de définir le générateur infinitésimal puis nous montrerons la connection entre cette notion et celle des processus de Markov.
+\newline
+
+Dans le second chapitre, nous rappelerons quelques propriétés sur les processus de Lévy, puis nous définirons les processus $\alpha$-stables et nous étudirons divers propriétés associés à leurs mesures de Lévy. Finalement, nous terminerons le chapitre par une brève analyse du laplacien fractionnaire. 
+\newline
+
+Dans le dernier chapitre, nous définirons la propriété de couplage et établirons sa connection avec la propriété de Liouville. Par suite, nous démontrerons que le processus de Lévy $\alpha$-stables invariant par rotation possède la propriété de couplage. Pour finir, nous donnerons une condition suffisante pour qu'un processus de Lévy possède la propriété de couplage. 
+
+\chapter{Semi-groupe associé à un processus de Markov}
+
+Dans ce premier chapitre, nous donnerons un aperçu sur la théorie des semi-groupes et des processus de Markov. Nous étudirons la connection entre ces deux notions. 
+\newline
+
+Dans toute la suite de ce mémoire, nous considérerons $(\Omega,\mathcal{F},\mathbb{P})$ un espace de probabilité, $d$ un entier naturel non nul, $B_{b}(\mathbb{R}^{d})$ l'ensemble des fonctions boréliennes bornées définies sur $\mathbb{R}^{d}$ à valeurs dans $\mathbb{R}$ et $M_{d}(\mathbb{R})$ l'ensemble des matrices carrées d'ordre $d$ à coefficients réels.
+
+\section{Intégrale de Bochner}
+Soit $(E,\left\|.\right\|)$ un espace de Banach et $\mathcal{B}(E)$ la tribu borélienne de $E$ engendrée par les ouverts de la topologie forte. Une application $f:\mathbb{R}_{+}\rightarrow E$ est dite fortement mesurable si elle est mesurable par rapport à $(\mathcal{B}(\mathbb{R}_{+}),\mathcal{B}(E))$.
+\newline
+
+Soit une mesure borélienne $\mu$ sur $\mathbb{R}_{+}$.
+Une application $s$ définie sur $\mathbb{R}_{+}$ à valeurs dans $E$ est dite étagée si elle s'écrit sous la forme
+\begin{equation} \label{boch}
+s(x)=\sum\limits_{i=1}^{n}{\mathbf{1}_{A_{i}}(x)b_{i}}
+\end{equation}
+où $n$ est un entier naturel non nul, $x$ est un réel positif, et pour tout $1\leq i\leq n$,  $b_{i}\in E$ et les ensembles $A_{i}$ sont des boréliens de $\mathbb{R}_{+}$ deux à deux disjoints tels que $\mu(A_{i})<\infty$. Pour une telle fonction, on définit l'intégrale de Bochner de $s$ par rapport à $\mu$ par
+$$\int_{\mathbb{R}_{+}}{s(x)\mu(dx)}=\sum\limits_{i=1}^{n}{\mu(A_{i})b_{i}}.$$
+
+Vu la non unicité de l'écriture (\ref{boch}) d'une fonction étagée $s$, pour que la définition soit cohérente, il est nécessaire que l'intégrale de Bochner de $s$ soit indépendante de son écriture sous la forme (\ref{boch}). Pour vérifier ceci, supposons que
+$$s =\sum\limits_{i=1}^{n}{\mathbf{1}_{A_{i}}(x)b_{i}}=\sum\limits_{j=1}^{m}{\mathbf{1}_{B_{j}}(x)c_{i}}$$ où $m$ est un entier naturel non nul et pour tout $1\leq j\leq m$, $c_{j}\in E$ et les ensembles $B_{j}$ sont des boréliens de $\mathbb{R}_{+}$ deux à deux disjoints tels que $\mu(B_{j})<\infty$. On définit
+$$A_{n+1}:=\mathbb{R}_{+}\backslash\mathop{\cup}^{n}_{i=1}A_{i}, \, \, \, B_{m+1}:=\mathbb{R}_{+}\backslash\mathop{\cup}^{m}_{j=1}B_{j}.$$
+Soit $1\leq i\leq n$ un indice tel que $b_{i}\neq 0$. Alors 
+$$A_{i}=A_{i}\cap\left(\mathop{\cup}^{m+1}_{j=1}B_{j}\right)=\mathop{\cup}^{m+1}_{j=1}(A_{i}\cap B_{j}).$$
+On signale que $A_{i}\cap B_{m+1}=\emptyset$. De même, pour tout $1\leq j \leq m$, tel que $c_{j}\neq0$, on a $B_{j}=\mathop{\cup}\limits^{n}_{i=1}(A_{i}\cap B_{j})$. Remarquons aussi que si $A_{i}\cap B_{j}\neq\emptyset$, on a $b_{i}=c_{j}$. Nous obtenons alors  
+$$\sum\limits_{i=1}^{n}{\mu(A_{i})b_{i}}=\sum\limits_{i=1}^{n}{\sum\limits_{j=1}^{m}{\mu(A_{i}\cap B_{j})b_{i}}}=\sum\limits_{i=1}^{n}{\sum\limits_{j=1}^{m}{\mu(A_{i}\cap B_{j})c_{j}}}=\sum\limits_{j=1}^{m}{\mu(B_{i})c_{i}}.$$
+D'autre part, l'intégrale de Bochner d'une application étagée $s$ vérifie 
+\begin{equation}\label{ineqat}
+\left\|\int_{\mathbb{R}_{+}}{s\, d\mu}\right\|=\left\|\sum\limits_{i=0}^{n}{\mu(A_{i})b_{i}}\right\|
+\leq \sum\limits_{i=0}^{n}{\mu(A_{i})\left\|b_{i}\right\|}
+=\int_{\mathbb{R}_{+}}{\left\|s(x)\right\|\, \mu(dx)}.
+\end{equation}
+La dernière intégrale étant une intégrale classique par rapport à la mesure $\mu$.
+
+\begin{definition}\label{defboch}
+Soit $f:\mathbb{R}_{+}\rightarrow E$ une application fortement mesurable. On dit que $f$ est $\mu$-Bochner intégrable s'il existe une suite d'applications étagées 
+$(s_{n})_{n\geq 1}$ définies sur $\mathbb{R}_{+}$ à valeurs dans $E$ vérifiant :
+\begin{enumerate}[label=(\roman*)]
+\item $(s_{n})_{n\geq0}$ converge $\mu$-presque partout vers $f$ dans $E$.
+\item $\lim\limits_{n\rightarrow \infty}{\int_{\mathbb{R}_{+}}}{\left\|f-s_{n}\right\|d\mu}=0.$
+\end{enumerate}
+Dans ce cas, on définit l'intégrale de Bochner de $f$ par rapport à $\mu$ par 
+\begin{equation}\label{1.3}
+\int_{\mathbb{R}_{+}}{f \, d\mu}:=\lim_{n\rightarrow \infty} \int_{\mathbb{R}_{+}}{s_{n}\, d\mu}.
+\end{equation}
+La limite dans l'équation (\ref{1.3}) correspond à la limite par rapport à la norme de $E$, i.e.
+$$\lim_{n\rightarrow\infty}\left\|\int_{\mathbb{R}_{+}}{f \, d\mu}-\int_{\mathbb{R}_{+}}{s_{n}\, d\mu}\right\|=0.$$
+\end{definition}
+
+La définition \ref{defboch} nécéssite quelques justifications. L'espace $(E,\left\|.\right\|)$ est complet. Ainsi en démontrant qu'elle est de Cauchy, on en déduit que la suite $$\left(\int_{\mathbb{R}_{+}}{s_{n}\, d\mu}\right)_{n\geq 1}$$ admet une limite dans $E$ quand $n$ tend vers $\infty$. Par suite, pour tout $\epsilon>0$, il existe un entier $N(\epsilon)>0$ tel que pour tous $n,m\geq N(\epsilon)$
+\begin{align*}\nonumber
+\left\|\int_{\mathbb{R}_{+}}{s_{n}\, d\mu}-\int_{\mathbb{R}_{+}}{s_{m}\, d\mu}\right\|&\leq \int_{\mathbb{R}_{+}}{\left\|s_{n}-s_{m}\right\|\, d\mu}\\
+&\leq \int_{\mathbb{R}_{+}}{\left\|s_{n}-f\right\|\, d\mu} + \int_{\mathbb{R}_{+}}{\left\|f-s_{m}\right\|\, d\mu}\leq 2\epsilon.
+\end{align*}
+
+Montrons maintenant que l'intégrale de Bochner de $f$ est indépendante du choix de la suite $(s_{n})_{n\geq1}$. Soit $(r_{n})_{n\geq1}$ une autre suite vérifiant $(i)$ et $(ii)$ de la définition \ref{defboch}. On a donc $(r_{n})_{n\geq1}$ est une suite de Cauchy. On pose alors 
+$$s:=\lim_{n\rightarrow \infty} \int_{\mathbb{R}_{+}}{s_{n}\, d\mu} \quad \text{et} \quad r:=\lim_{n\rightarrow \infty} \int_{\mathbb{R}_{+}}{r_{n}\, d\mu}.$$
+On définit la suite $(z_{n})_{n\geq1}$ vérifiant pour tout $k\geq 1$  $$z_{2k}=s_{k} \quad \text{et} \quad z_{2k+1}=r_{k+1}.$$ Puisque $(z_{n})_{n\geq1}$ vérifie $(ii)$, on conclut que la suite $$\left(\int_{\mathbb{R}_{+}}{z_{n}\, d\mu}\right)_{n\geq 1}$$ est aussi  de Cauchy. Alors elle converge vers un élément $z\in E$. De plus, cette suite admet deux sous-suites convergentes ayant pour limites respectivement $r$ et $s$. On en déduit alors que $r=s=z$.
+\newline
+
+Il est facile de vérifier, par passage à la limite, que l'inégalité (\ref{ineqat}) s'étend à toute application $\mu$-Bochner intégrable $s=f$. Autrement dit, si $f$ est $\mu$-Bochner intégrable alors
+\begin{equation}\label{ineq}
+\left\|\int_{\mathbb{R}_{+}}{f\, d\mu}\right\|\leq \int_{\mathbb{R}_{+}}{\left\|f(x)\right\|\, \mu(dx)}.
+\end{equation}
+
+Une application $f:\mathbb{R}_{+}\rightarrow E$ est dite fortement dérivable en un réel $x>0$ s'il existe un élément $c\in E$ tel que
+ $$\lim_{h\rightarrow 0}\left\|\frac{f(x+h)-f(h)}{h}-c\right\|=0.$$ 
+Le vecteur $c$ s'appelle la dérivée forte de $f$ au point $x$. On note 
+\begin{equation}
+c= f^{\prime}(x):=\lim_{h\rightarrow 0}\frac{f(x+h)-f(h)}{h}.
+\end{equation}
+
+Dans toute la suite, pour tout $x\geq 0$, on notera $$\int_{0}^{x}{f \, du}=\int_{0}^{x}{f\mathbf{1}_{[0,x]} \, du}$$ l'intégrale de Bochner de $f$ sur $[0,x]$ par rapport à la mesure de Lebesgue sur $\mathbb{R}_{+}$. Par ailleurs, on dira qu'une application $f$ est Bochner intégrable si elle est Bochner intégrable par rapport à la mesure de Lebesgue sur  $\mathbb{R}_{+}$. 
+
+\begin{theoreme}
+Soit $f:\mathbb{R}_{+}\rightarrow E$ une application Bochner intégrable sur $\mathbb{R}_{+}$.
+
+\begin{enumerate}[label=(\roman*)]
+
+\item L'application $F: \mathbb{R}_{+}\rightarrow E$  définie pour tout $x\in\mathbb{R}_{+}$ par 
+\begin{equation}\label{calculus}
+F(x)=\int_{0}^{x}f(u)\,du
+\end{equation}
+est fortement dérivable en tout point $x>0$ et on a $F^{\prime}(x)=f(x)$.
+\item Soit $a, \, b >0$ et soit $\phi:[a,b]\rightarrow\mathbb{R}_{+}$ une fonction de classe $C^{1}$ sur $[a,b]$. Alors 
+\begin{equation} \label{variable}
+\int_{\phi(a)}^{\phi(b)}{f(x) dx}=\int_{a}^{b}{f(\phi(x))\phi^{\prime}(x) \, dx}.
+\end{equation}
+\end{enumerate}
+\end{theoreme}
+
+\begin{proposition}\label{cont}
+Soit $T: E \rightarrow E$ un opérateur linéaire continu et soit $f:\mathbb{R}_{+}\rightarrow E$  une application $\mu$-Bochner intégrable. Alors 
+$$T\int_{\mathbb{R}_{+}}{f\, d\mu}= \int_{\mathbb{R}_{+}}{Tf\, d\mu}.$$
+\end{proposition}
+\begin{proof}
+Considérons tout d'abord une application étagée donnée par (\ref{boch}). Par linéarité de l'opérateur $T$ on obtient 
+$$T\int_{\mathbb{R}_{+}}{s\, d\mu}=\sum^{n}_{i=1}\mu(A_{i})Tb_{i}= \int_{\mathbb{R}_{+}}{Ts\, d\mu}.$$
+Soit maintenant $(s_{n})_{n\geq 0}$ une suite d'applications étagées vérifiant $(i)$ et $(ii)$ de la définition \ref{defboch}.
+Alors par continuité de l'opérateur $T$, on a 
+$$\lim_{n\rightarrow \infty} T\int_{\mathbb{R}_{+}}{s_{n}\, d\mu} = T\int_{\mathbb{R}_{+}}{f\, d\mu}.$$
+De plus, en utilisant (\ref{ineq}) on en déduit que pour tout $n\geq 1$ 
+\begin{equation}\nonumber
+\begin{split}
+\left\|\int_{\mathbb{R}_{+}}{Ts_{n}\, d\mu}-\int_{\mathbb{R}_{+}}{Tf\, d\mu}\right\| \leq\int_{\mathbb{R}_{+}}{\left\|T(s_{n}-f)\right\|\, d\mu}\leq\left\|T\right\|\int_{\mathbb{R}_{+}}{\left\|(s_{n}-f)\right\|\, d\mu}
+\end{split}
+\end{equation}
+qui tend vers $0$ quand $n$ tend vers l'infini.
+
+\end{proof}
+
+\section{Semi-groupes et leurs générateurs}
+
+Soit $(T_{t})_{t\ge 0}$ un semi-groupe fortement continu de contraction sur $E$, i.e. $(T_{t})_{t\ge 0}$ est une famille d'endomorphisme de $E$ vérifiant:
+
+\begin{enumerate}[label=(\roman*)]
+\item$T_{0}=I$ (où est $I$ est l'application identité de $E$).
+
+\item Pour tous réels $s,\, t \geq 0$, $T_{s+t} =T_{s}T_{t}$. (Propriété de semi-groupe)
+
+\item Pour tout $t>0$, $\left\|T_{t}\right\|\leq 1$.
+
+\item L'application $t \mapsto T_{t}$ définie sur $\mathbb{R}_{+}$ à valeurs dans l'ensemble des endomorphismes de $E$ est fortement continue en $0$, i.e. pour tout $\psi\in E$,
+$$\lim_{t\rightarrow0}\left\|T_{t}\psi - \psi\right\| = 0.$$
+
+\end{enumerate}
+
+On remarque que l'application $t \mapsto T_{t}$ est fortement continue en tout $t>0$, i.e. pour tout $\psi \in E$, on a
+$$\lim_{s\rightarrow t}\left\|T_{t}\psi - T_{s}\psi\right\| = 0.$$
+En effet, pour $h> 0$,
+\begin{equation}\nonumber
+\begin{split}
+\left\|T_{t+h}\psi-T_{t}\psi\right\|
+&=\left\|T_{t}(T_{h}-I)\psi\right\|\\
+&\leq\left\|T_{t}\right\|\left\|(T_{h}-I)\psi\right\|\\
+&\leq\left\|(T_{h}-I)\psi\right\|.\\
+\end{split}
+\end{equation}
+En faisant tendre $h$ vers $0$, on conclut que 
+$$\lim_{s\rightarrow t^{+}}\left\|T_{t}\psi - T_{s}\psi\right\| = 0.$$
+De même, on vérifie que 
+$$\lim_{s\rightarrow t^{-}}\left\|T_{t}\psi - T_{s}\psi\right\| = 0.$$
+
+Soit l'ensemble $D$ défini par
+$$ D = \left\{ \psi \in E : \, \exists \, \phi_{\psi} \in E; \, 
+\lim_{t\rightarrow 0}\left\| \frac{T_{t}\psi-\psi}{t} - \phi_{\psi} \right\| =0 \right\}.$$ 
+Il est évident que $D$ est un sous espace vectoriel de $E$. De plus, pour tout $\psi\in D$, $\phi_{\psi}$ est unique.
+\begin{definition}
+L'opérateur linéaire A qui associe à tout élément $\psi \in D$ l'élément $\phi_{\psi}$ s'appelle générateur infinitésimal du semi-groupe $(T_{t})_{t\ge 0}$. Le sous espace vectoriel $D$ sera noté par $D_{A}$ et est appelé le domaine de l'opérateur $A$.
+\end{definition}
+
+Soit $\psi\in E$. Considérons l'application $\Psi: t \mapsto T_{t}\psi$ définie sur $\mathbb{R}_{+}$ à valeurs dans $E$. L'application $\Psi$ est Bochner intégrable sur tout compact de $\mathbb{R}_{+}$ (voir \cite{ref4}). Comme pour tout $t> 0$, l'opérateur $T_{t}$ est continu, la proposition \ref{cont} donne que pour tous réels $t$, $s$ et  $u >0$:
+\begin{equation}\label{corollaire1}
+T_{s}\int_{0}^{t}{T_{u}\psi \, du}=\int_{0}^{t}{T_{u+s}\psi \, du}.
+\end{equation}
+\begin{proposition}
+Soit $t>0$ et $\psi\in E$. Alors  $\int_{0}^{t}{T_{u}\psi \, du}\in D_{A}$ et on a
+$$A \int_{0}^{t}{T_{u}\psi \,du}= T_{t}\psi-\psi.$$
+\end{proposition}
+\begin{proof}
+Soit $\psi\in E$ et un réel $t>0$. En utilisant  (\ref{variable}) et (\ref{corollaire1}), on obtient pour tout réels $h>0$
+\begin{align*} \nonumber
+\left( \frac{1}{h} \int_{0}^{t}{T_{u+h}\psi \,du}- \frac{1}{h}\int_{0}^{t}{T_{u}\psi \,du}\right)&=\left( \frac{1}{h} \int_{h}^{t+h}{T_{u}\psi \,du}- \frac{1}{h}\int_{0}^{t}{T_{u}\psi \,du}\right) \\
+&=\left(\frac{1}{h} \int_{t}^{t+h}{T_{u}\psi \, du}-\frac{1}{h}\int_{0}^{h}{T_{u}\psi \, du}\right)\\
+&= \frac{F(t+h)-F(h)}{h} - \frac{F(h)-F(0)}{h}
+\end{align*}
+où $$F(x)= \int^{x}_{0}{T_{u}\psi \, du} \quad \text{pour tout} \,\, x\in\mathbb{R}_{+}.$$
+On faisant tendre $h$ vers l'infini, (\ref{calculus}) donne que $$A\int_{0}^{t}{T_{u}\psi du}=T_{t}\psi-\psi.$$
+
+\end{proof}
+
+\begin{theoreme}
+Pour tous $t\geq0$ et $\psi \in D_{A}$,
+$$T_{t}\psi\in D_{A} \quad \text{et} \quad AT_{t}\psi=T_{t}A \psi.$$
+\end{theoreme}
+
+\begin{proof}
+Soit $\psi \in D_{A}$ et $t\geq 0$ et posons $\phi=T_{t}\psi$.
+En utilisant le fait que l'opérateur $T_{t}$ est continu sur $E$, on a
+\begin{equation}\label{comut} 
+\frac{T_{s}\phi-\phi}{s}=T_{t}\left(\frac{T_{s}\psi-\psi}{s}\right) \underset{s\rightarrow 0}{\longrightarrow} T_{t}A\psi.
+\end{equation}
+Par suite, $\phi=T_{t}\psi\in D_{A}$ et $A\phi=T_{t}A\psi$.
+\end{proof}
+
+Il est immédiat d'après (\ref{comut}), que $t\mapsto T_{t}\psi$ est fortement dérivable sur $\mathbb{R}^{+}$ et que $$\frac{d}{dt}T_{t}\psi= AT_{t}\psi=T_{t}A.$$
+Cette égalité s'appelle équation Forward-Backward.
+\section{Semi-groupe associé à un processus de Markov}
+
+Soit $X$ et $Y$ des variables aléatoires réelles définies sur $(\Omega,\mathcal{F},\mathbb{P})$ et soit une tribu $\mathcal{B}$ sur $\Omega$ telle que $\mathcal{B}\subset\mathcal{F}$. On rappelle que l'espérance conditionnelle de X sachant $\mathcal{B}$ est la variable aléatoire notée $\mathbb{E}(X|\mathcal{B})$ vérifiant:
+
+\begin{enumerate}[label=(\roman*)]
+\item $\mathbb{E}(X|\mathcal{B})$ est $\mathcal{B}$ mesurable. 
+
+\item Pour tout $A\in\mathcal{B}$, $\mathbb{E}(X\mathbf{1}_{A})=\mathbb{E}(\mathbb{E}(X|\mathcal{B})\mathbf{1}_{A})$.
+\end{enumerate}
+On note par $\mathbb{E}(X|Y)$ l'espérance conditionnelle de X sachant à la tribu engendrée par $Y$.
+\newline
+
+Une application $N: \mathbb{R}^{d}\times\mathcal{B}(\mathbb{R}^{d})\mapsto \mathbb{R}$ est appelée probabilité de transition si elle vérifie les propriétés suivantes:
+
+\begin{enumerate}[label=(\roman*)]
+
+\item Pour tout $x \in \mathbb{R}^{d}$, $N(x,\cdot)$ est une mesure de probabilité sur $(\mathbb{R}^{d},\mathcal{B}(\mathbb{R}^{d}))$.
+
+\item Pour tout $A \in \mathcal{B}(\mathbb{R}^{d})$, $N(\cdot, A)$ est une fonction borélienne sur $\mathbb{R}^{d}$.
+\end{enumerate}
+
+Entre autre, si $\mu$ est une mesure de probabilité, on note par $\mu\cdot N$ l'application définie sur $\mathcal{B}(\mathbb{R}^{d})\times\mathcal{B}(\mathbb{R}^{d})$ vérifiant pour tous $A, \, B\in \mathcal{B}(\mathbb{R}^{d})$ par
+$$\mu\cdot N(A \times B)=\int_{A}N(x,B)\mu(d x).$$ 
+Le théorème de Carathéodory (voir par exemple \cite{ref4}) nous permet de prolonger cette application en une unique mesure de probabilité sur $(\mathbb{R}^{2d},\mathcal{B}(\mathbb{R}^{2d}))$ que l'on note encore $\mu\cdot N$.
+\newline
+
+Soit X et Y des variables aléatoires à valeurs dans $\mathbb{R}^{d}$. On appelle loi conditionnelle de X sachant Y, la probabilité de transition $N: \mathbb{R}^{d}\times\mathcal{B}(\mathbb{R}^{d})\mapsto \mathbb{R}$ vérifiant
+\begin{equation}\label{loicond}
+\mathbb{P}_{(X,Y)} =\mathbb{P}_{Y}\cdot N.
+\end{equation} On note pour tous $A\in \mathcal{B}(\mathbb{R}^{d})$ et $y \in \mathbb{R}^{d}$
+$$N(y,A):=\mathbb{P}(X\in A|Y=y).$$
+Le théorème de Jirina (\cite{ref1} page $256$) assure l'existance d'une telle loi conditionnelle.
+\newline
+
+Le théorème suivant est le théorème de Fubini. Pour une démonstration de ce résultat, voir Strook \cite{ref1}.
+\begin{theoreme}
+Soit $\phi : \mathbb{R}^{d} \times \mathbb{R}^{d}\mapsto \mathbb{R}$ une application borélienne.
+\begin{enumerate}[label=(\roman*)]
+\item Supposons que $\phi$ est positive. Alors l'application $$y\mapsto\int_{\mathbb{R}^{d}}{\phi(x,y)\mathbb{P}(X\in dx|Y=y)}$$ est borélienne positive et on a 
+\begin{equation} \label{fubini}
+\int_{\mathbb{R}^{d}\times \mathbb{R}^{d}}{\phi(x)\mathbb{P}_{(X,Y)}(dx)} = 
+\int_{\mathbb{R}^{d}}{\left[\int_{\mathbb{R}^{d}}{\phi(x,y) )\mathbb{P}(X\in dx|Y=y)}\right]\mathbb{P}_{Y}(d y)}.
+\end{equation}
+
+\item Supposons que $\phi$ est $\mathbb{P}_{(X,Y)}$-intégrable sur $\mathbb{R}^{d}\times\mathbb{R}^{d}$. Alors  pour $\mathbb{P}_{Y}$-presque tout $y\in\mathbb{R}^{d}$ l'application  $x\mapsto\phi(x,y)$ est $\mathbb{P}(X\in\cdot\, |Y=y)$ intégrable et l'application $$y\mapsto\int_{\mathbb{R}^{d}}{\phi(x,y)\mathbb{P}(X\in dx|Y=y)}$$ est $\mathbb{P}_{Y}$ intégrable. De plus, l'égalité (\ref{fubini}) à lieu.
+\end{enumerate}
+\end{theoreme}
+
+\begin{proposition}
+Soit $\phi\in B_{b}(\mathbb{R}^{d})$ et soit pour tout $y\in\mathbb{R}^{d}$, 
+$$\psi(y) = \mathbb{E}(\phi(X)|Y=y) =\int_{\mathbb{R}^{d}}\phi(x)\mathbb{P}(X\in dx|Y=y).$$
+Alors $\psi(Y)=\mathbb{E}(\phi(X)|Y)$.
+\end{proposition}
+\begin{proof}
+Le théorème de Fubini donne que $\psi$ est borélienne, ce qui entraine que $\psi(Y)$ est $\sigma(Y)$-mesurable. Puisque $\mathbb{P}(X\in \cdot|Y=\cdot)$ est une probabilité de transition vérifiant (\ref{loicond}), on a pour tout $A\in \mathcal{B}(\mathbb{R}^{d})$ 
+\begin{equation} \nonumber
+\begin{split} 
+\mathbb{E}(\psi(Y)\mathbf{1}_{\{Y\in A\}})
+&=\int_{A}{\psi(y)\mathbb{P}_{Y}(dy)}\\
+&=\int_{A}{\int_{\mathbb{R}^{d}}{\phi(x)\mathbb{P}_{X|Y=y}(d x)}\mathbb{P}_{Y}(dy)}\\
+&=\int_{\mathbb{R}^{d}\times\mathbb{R}^{d}}{\phi(x)\mathbf{1}_{A}(y)\mathbb{P}_{(X,Y)}(dx,dy)}\\
+&=\mathbb{E}(\phi(X)\mathbf{1}_{\{Y\in A\}}).\\
+\end{split}
+\end{equation}
+
+\end{proof}
+
+\begin{definition}
+Soit $(\mathcal{F}_{t})_{t\geq0}$ une filtration sur $(\Omega,\mathcal{F},\mathbb{P})$. On dit qu'un processus adapté $(X_{t})_{t\ge0}$ est de Markov (il vérifie la propriété de Markov faible) si pour toute fonction $f\in B_{b}(\mathbb{R}^{d})$ et pour tous $t \geq s \geq 0 $:
+\begin{equation}\label{1}
+\mathbb{E}(f(X_{t})|\mathcal{F}_{s})= \mathbb{E}(f(X_{t})|X_{s}).
+\end{equation}
+A tout processus de Markov, on associe la famille d'opérateurs $(T_{s,t})_{t \geq s \geq 0}$ définie sur $B_{b}(\mathbb{R}^{d})$ à valeurs dans $B_{b}(\mathbb{R}^{d})$ vérifiant pour tout $x\in\mathbb{R}^{d}$ par
+$$T_{s,t}f(x) = \mathbb{E}(f(X_{t})|X_{s}=x).$$
+Cette famille est appelée famille de transition.
+
+\end{definition}
+
+\begin{proposition}\label{homo}
+Soit $(X_{t})_{t\ge0}$ un processus de Markov et $(T_{s,t},t \geq s \geq 0)$ la famille de transition associée. Alors pour tous réels $t \geq r\geq s \geq 0 $, on a
+\begin{equation}\label{kolmogo}
+T_{r,s}T_{s,t}=T_{r,t}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Soit $f\in B_{b}(\mathbb{R}^{d})$, $x\in\mathbb{R}^{d}$ et  $t \geq r\geq s \geq 0 $. Alors
+\begin{equation} \nonumber 
+\begin{split}
+T_{r,t}f(x)
+&=\mathbb{E}(f(X_{t})|X_{r}=x)\\
+&=\mathbb{E}(\mathbb{E}(f(X_{t})|\mathcal{F}_{s})|X_{r}=x)\\
+&=\mathbb{E}(\mathbb{E}(f(X_{t})|{X}_{s})|X_{r}=x)\\
+&=\mathbb{E}(T_{s,t}f(X_{s})|X_{r}=x)\\
+&=T_{r,s}T_{s,t}f(x).\\
+\end{split}
+\end{equation}
+\end{proof}
+Soit $X = (X_{t})_{t\geq 0}$ un processus de Markov et $(T_{s,t})_{t\geq s\geq 0}$ la famille de transition associée. On dit qu'un processus de Markov est normal si pour tout $f\in B_{b}(\mathbb{R}^{d})$ et pour tous réels $t \geq s \geq 0$, $T_{s,t}f$ est mesurable. On définit pour tous réels $t\geq s \geq 0$, $x \in \mathbb{R}^{d}$ et $A\in \mathcal{B}(\mathbb{R}^{d})$, la famille de probabilité de transition $(p_{s,t})_{t \geq s \geq 0}$ par:
+$$p_{s,t}(x,A)=\mathbb{P}(X_{t}\in A|X_{s}=x)=T_{s,t}\mathbf{1}_{A}(x).$$
+Cette famille s'appelle la loi de transition du processus. On remarque que pour tout $f \in \mathcal{B}_{b}(\mathbb{R}^{d})$,
+ $$T_{s,t}f(x) = \int_{\mathbb{R}^{d}}f(y) p_{s,t}(x,dy).$$ 
+
+On dit que le processus $X = (X_{t})_{t\geq 0}$ est homogène si pour tous $t \geq s \geq 0$, $T_{s,t}=T_{0,t-s}$. Dans ce cas, on note $T_{0,t}$ par $T_{t}$ et $p_{0,t}$ par $p_{t}$. Ainsi l'égalité (\ref{kolmogo}) s'écrit $$T_{t}T_{s}=T_{t+s} \quad \text{pour tous} \quad t \geq s \geq 0.$$
+
+Dans toute la suite, $C_{0}(\mathbb{R}^{d})$ designe l'espace de Banach des fonctions continues $f:\mathbb{R}^{d}\rightarrow \mathbb{R}$  vérifiant 
+$$ \lim_{\left|x\right|\rightarrow\infty} \left|f(x)\right|=0.$$ 
+On muni cet espace de la norme uniforme.
+
+\begin{definition}[Processus de Feller]\label{defeller}
+Soit $X = (X_{t})_{t\ge0}$  un processus de Markov normal et homogène et on désignos par par $(T_{t})_{t\geq 0}$ sa famille de transition. Le processus $(X_{t})_{t\ge0}$ est dit de Feller, si pour tout $t\geq 0$ et pour toute fonction $f\in C_{0}(\mathbb{R}^{d})$,
+
+\begin{enumerate}[label=(\roman*)]
+
+\item $T_{t}f \in C_{0}(\mathbb{R}^{d}).$
+
+\item $\lim\limits_{t\rightarrow 0}\left\|T_{t}f-f\right\|= 0.$
+\end{enumerate}
+\end{definition}
+Il est immédiat que $(T_{t})_{t\geq 0}$ forme un semigroupe fortement continu de contraction sur $C_{0}(\mathbb{R}^{d})$.
+
+\chapter{Processus de Lévy $\alpha$-stable}
+Dans ce chapitre, nous étudirons quelques propriétés élémentaires des processus de Lévy, puis nous introduirons la notion de processus stable. Nous donnerons aussi une représentation du générateur infinitésimal d'un processus de Lévy sous forme d'opérateur pseudo-différentiel.
+\newline
+
+Dans toute la suite de ce chapitre, $(X_{t})_{t\geq0}$ designera un processus à valeurs dans $\mathbb{R}^{d}$ et $(\mathcal{F}_{t})_{t\geq0}$ une filtration sur l'espace de probabilité $(\Omega,\mathcal{F},\mathbb{P})$.
+
+\section{Généralités sur les processus de Lévy} 
+Soit $\lambda$ et $\mu$ deux mesures de probabilité sur  $\mathbb{R}^{d}$. On rappelle que leur produit de convolution est défini pour tout $A \in \mathcal B(\mathbb{R}^{d})$ par:
+$$\lambda\ast\mu(A) = \int_{\mathbb{R}^{2d}}{\mathbf{1}_{A}(x+y)\lambda(dx)\mu(dy)}.$$
+Autrement dit, pour toute fonction $f\in B_{b}(\mathbb{R}^{d})$:
+$$\int_{\mathbb{R}^{d}}{f(x)\mu\ast\lambda(dx)}=\int_{\mathbb{R}^{d}}{\int_{\mathbb{R}^{d}} {f(x+y)\mu(dx)}\lambda(dy)}.$$
+
+\begin{definition}
+Soit $\mu$ une mesure de probabilité sur $\mathbb{R}^{d}$. On dit que $\mu $ est infiniment divisible si pour tout $n\geq 1$, il existe une mesure de probabilité $\mu_{n} $ sur $\mathbb{R}^{d}$
+vérifiant $$\mu  = \mu_{n}^{\ast n} =\underbrace{\mu_{n}\ast ....\ast\mu_{n}}_{n \, fois}.$$
+De même, on dit qu'une variable aléatoire à valeurs dans $\mathbb{R}^{d}$ est infiniment divisible si sa loi l'est.
+\end{definition}
+Dans la suite, nous noterons pour toute mesure de probabilité $\mu$ et pour tout $u \in \mathbb{R}^{d}$ par $$\Phi_{\mu}(u)=\int_{\mathbb{R}^{d}}{e^{i\prodscal{x}{u}}\mu(dx)}$$ la fonction caractéristique de $\mu$.
+
+\begin{proposition}
+
+Soit $\mu$ une mesure de probabilité sur $\mathbb{R}^{d}$. Alors $\mu$ est infiniment divisible, si et seulement si, pour tout $n\geq 1$ il existe une mesure de probabilité $\mu_{n}$ sur $\mathbb{R}^{d}$, vérifiant:
+$$\Phi_{\mu}(u) =(\Phi_{\mu_{n}}(u))^{n}.$$
+\end{proposition}
+
+\begin{proof}
+Si $\mu$ est infiniment divisible, on a pour tous $n\geq 1$ et $u \in \mathbb{R}^{d}$:
+\begin{equation} \nonumber
+\begin{split}
+\Phi_{\mu}(u)
+&=\int_{\mathbb{R}^{d}}{e^{i\prodscal{x}{u}}\mu(dx)}\\
+&=\int_{\mathbb{R}^{d}}{e^{i\prodscal{x}{u}}\mu_{n}^{\ast n}(dx)}\\
+&=\int_{\mathbb{R}^{d}}{e^{i\prodscal{x_{1}}{u}}\mu_{n}(dx_{1})}\times...\times \int_{\mathbb{R}^{d}}{e^{i\prodscal{x_{n}}{u}}\mu_{n}(dx_{n})}\\
+&=(\Phi_{\mu_{n}}(u))^{n}\\
+\end{split}
+\end{equation}
+Pour tout $n\geq 1$, on note $\mu_{n}$ la mesure de probabilité sur $\mathbb{R}^{d}$ vérifiant $\Phi_{\mu}(u) =(\Phi_{\mu_{n}}(u))^{n}$. Il est évident que pour tout  $u\in \mathbb{R}^{d}$, $\Phi_{\mu}(u)=\Phi_{\mu_{n}^{\ast n}}(u)$. On en déduit que $\mu=\mu_{n}^{\ast n}$.
+
+\end{proof} 
+
+On rappelle qu'une mesure de Lévy $\nu$ sur $\mathbb{R} ^{d}$ vérifie:
+
+\begin{enumerate}[label=(\roman*)]
+\item $\nu(\{0\}) = 0$.
+
+\item $\int_{\mathbb{R} ^{d}}{1\wedge\left|y\right|^{2} \, \nu(dy)} <\infty$.
+\end{enumerate}
+
+Le théorème suivant donne une caractérisation des mesures infiniments divisibles par la forme de leurs fonctions caractéristiques. Pour la démonstration de ce résultat voir Applebaum \cite{ref2} page $30$ et $126$.
+
+\begin{theoreme}[Formule de Levy-Khintchine]
+
+Soit $\mu$ une mesure de probabilité infiniment divisible sur $\mathbb{R}^{d}$. Alors il existe $A\in M_{d}(\mathbb{R})$ symétrique définie positive, un vecteur $b\in \mathbb{R}^{d}$ et une mesure de Lévy $\nu$ sur $\mathbb{R}^{d}$ tels que pour tout $u\in \mathbb{R} ^{d}$,
+\begin{equation}\label{khintchine}
+\Phi_{\mu}(u) = exp\left(i\prodscal{b}{u} -\frac{1}{2}\prodscal{Au}{u} + \int_{\mathbb{R} ^{d}} [e^{i\prodscal{u}{y}} - 1 - i\prodscal{u}{y}\mathbf{1}_{B(0,1)}(y)] \nu(dy)\right)
+\end{equation}
+où $B(0,1)$ désigne la boule unité de $\mathbb{R}^{d}$. 
+\newline
+
+Reciproquement, toute mesure infiniment divisible dont la fonction caractéristique s'écrit sous la forme (\ref{khintchine}) est infiniment divisible.
+\newline 
+
+L'application $\eta$ vérifiant pour tout $u\in\mathbb{R}^{d}$,
+$$\eta(u)= i\prodscal{b}{u} -\frac{1}{2}\prodscal{Au}{u} + \int_{\mathbb{R} ^{d}} [e^{i\prodscal{u}{y}} - 1 - i\prodscal{u}{y}\mathbf{1}_{B(0,1)}(y)] \nu(dy)$$ 
+est appelée symbole de Lévy. Le triplet $(A,b,\nu)$ quand à lui est appelé triplet de Lévy.
+\end{theoreme}
+
+On rappelle que le processus $(X_{t})_{t\ge 0}$ est à accroissements indépendants si pour tout entier $n\geq 1$, $0<t_{1}<...<t_{n}$, les variables aléatoires $X_{t_{1}}-X_{t_{0}},..., X_{t_{n}}-X_{t_{n-1}}$ sont indépendantes.
+\newline
+
+On dit que $(X_{t})_{t\ge 0}$ est à accroissements stationnaires si pour tout $t\geq s \geq 0$, les variables aléatoires $X_{t}-X_{s}$ et $X_{t-s}-X_{0}$ ont même loi. 
+\newline
+
+Dans toute la suite, nous appellerons P.A.I.S les processus à accroissements indépendants et stationnaires.
+
+\begin{definition}
+Soit $x\in\mathbb{R}^{d}$ et $(X_{t})_{t\ge 0}$ un processus stochastique définie sur $(\Omega,\mathcal{F},\mathbb{P})$ à valeurs dans $\mathbb{R}^{d}$.  On dit que $(X_{t})_{t\ge 0}$ est un processus de Lévy issu de $x$ si :
+\begin{enumerate}[label=(\roman*)]
+\item $X_{0} = x$.
+\item $(X_{t})_{t\ge0}$ est un P.A.I.S.
+\item$(X_{t})_{t\ge0}$ est à trajectoires continues à droite avec une limite à gauche (càdlàg), i.e. pour tout $\omega\in\Omega$, $t\geq 0$, et $r>0$: 
+$$\lim\limits_{\underset{s\geq t}{s\rightarrow t}} \left|X_{t}(\omega)-X_{s}(\omega)\right| = 0 \, \, \, \, \text{      et       } \, \, \,  \lim\limits_{\underset{0\leq s\leq r}{s\rightarrow r}} \left|X_{s}(\omega)\right| <\infty.$$
+\end{enumerate}
+\end{definition}
+
+On remarque que pour tous $t\geq 0$ et $n\geq 1$:
+$$X_{t}=\sum\limits_{k=1}^{n}{Y_{k}^{(n)}(t)}$$
+avec $Y_{k}^{(n)}(t)= X_{\frac{kt}{n}}-X_{\frac{(k-1)t}{n}}$ pour tout entier $1\leq k\leq n$. Comme les variables aléatoires $Y_{k}^{(n)}(t)$ sont i.i.d (indépendantes identiquement distribuées), on en déduit que $X_{t}$ est infiniment divisible pour tout $t\geq 0$.
+
+\begin{lemme}[Voir \cite{ref2}]
+Soit $(X_{t})_{t\geq0}$ un processus de Lévy alors
+pour tout $u\in\mathbb{R}^{d}$, l'application $t\rightarrow \Phi_{X_{t}}(u)$ est continue.
+\end{lemme}
+
+\begin{theoreme}\label{eta}
+Soit $(X_{t})_{t\geq 0}$ un processus de Lévy à valeurs dans $\mathbb{R}^{d}$ et soit $\eta$ et $(A,b,\nu)$ respectivement, symbole et triplet de Lévy de $X_{1}$. Alors pour tout $t\ge0$:
+\begin{equation} \label{levy}
+\Phi_{X_{t}}(u) = \mathbb{E}(e^{i\prodscal{X_{t}}{u}}) = e^{t\eta(u)} = (\Phi_{X_{1}}(u))^{t}.  
+\end{equation}
+Dans ce cas, on dit que $\eta$ et $(A,b,\nu)$ sont respectivement symbole et triplet de Lévy de $(X_{t})_{t\geq0}$.
+\end{theoreme}
+
+\begin{proof}
+Il suffit de montrer que pour tout $t\geq 0$, on a $\eta_{t}(u)=t\eta_{1}(u)$ où $\eta_{t}$ est le symbole de Lévy de $(X_{t})_{t\geq 0}$. Sans perte de généralité, supposons que $(X_{t})_{t\geq 0}$ est issu de $0$. Soit $t, s\geq 0$ et $u\in\mathbb{R}^{d}$, on a
+\begin{equation} \label{num1}
+\Phi_{X_{t+s}}(u) =\mathbb{E}(e^{i\prodscal{X_{t+s}}{u}})=\mathbb{E}(e^{i\prodscal{X_{t+s}-X_{s}}{u}}e^{\prodscal{X_{s}}{u}})=\Phi_{X_{t+s}-X_{s}}(u)\Phi_{X_{s}}(u)=\Phi_{X_{t}}(u)\Phi_{X_{s}}(u).
+\end{equation}
+D'autre part, il est évident que $\Phi_{X_{t}}(0)=1$. On en déduit que l'unique solution continue de l'équation vérifiant (\ref{num1}) est $\Phi_{X_{t}}(u)= e^{t \beta(u)}$ avec $\beta:\mathbb{R}^{d}\rightarrow\mathbb{C}$. D'où $\beta(u)=\eta(u)$.
+
+\end{proof}
+
+\begin{theoreme}
+Soit $(X_{t})_{t\ge 0}$ et $(Y_{t})_{t\ge 0}$ deux processus de Lévy tels que les variables aléatoires $X_{1}$ et $Y_{1}$ aient la même loi. Alors les processus $(X_{t})_{t\ge 0}$ et $(Y_{t})_{t\ge 0}$ ont même loi.
+\end{theoreme}
+
+\begin{proof}
+
+D'après la théorème \ref{eta}, pour tout $t\ge 0 $, $X_{t} \overset{loi}{=} Y_{t}$. Cela implique que pour tous $t \ge 0$ et $s\ge 0$:
+$$ X_{t+s} -X_{s}\overset{loi}{=} Y_{t+s} - Y_{s}.$$ 
+Comme les processus $(X_{t})_{t\ge 0}$ et $(Y_{t})_{t\ge 0}$ sont à accroissements indépendants, on a pour tous $n \geq 1$ et $t_{n}>...>t_{1} \geq 0$ 
+$$(X_{t_{1}},X_{t_{2}} - X_{t_{1}}, ...,X_{t_{n}} - X_{t_{n-1}}) \overset{loi}{=} (Y_{t_{1}},Y_{t_{2}} - Y_{t_{1}}, ...,Y_{t_{n}} - Y_{t_{n-1}}).$$ 
+Vu que la fonction $f: x=(x_{1},...,x_{d})\mapsto(x_{1},x_{1}+x_{2}, ...., x_{n-1}+x_{n})$ définie sur $\mathbb{R}^{nd}$ à valeurs $\mathbb{R}^{nd}$ est borélienne et nous donne  
+$$f((X_{t_{1}},X_{t_{2}} - X_{t_{1}}, ...,X_{t_{n}} - X_{t_{n-1}}))=(X_{t_{1}}, ...,X_{t_{n}})$$ 
+on en déduit que 
+$$(X_{t_{1}}, ...,X_{t_{n}}) \overset{loi}{=} (Y_{t_{1}}, ... ,Y_{t_{n}}).$$ 
+Les processus $(X_{t})_{t\ge 0}$ et $(Y_{t})_{t\ge 0}$ possèdent alors les mêmes lois finis dimensionnelles. On en déduit qu'ils ont même loi.
+
+\end{proof}
+
+\begin{lemme}[Voir \cite{ref2}]\label{précedant}
+Soit $(X_{t})_{t\geq0}$ un processus de Lévy issu de $x\in\mathbb{R}^{d}$ et soit $p_{t}$ la loi de $X_{t}$ pour tout $t>0$. Alors $p_{t}$ converge faiblement vers $\delta_{x}$ (mesure de Dirac en x), i.e. pour tout $f\in B_{b}(\mathbb{R}^{d})$, on a :
+$$\lim_{t\rightarrow0} \int_{\mathbb{R}^{d}}{f(y)p_{t}(dy)}=\int_{\mathbb{R}^{d}}{f(y)\delta_{x}(dy)}.$$
+\end{lemme}
+\begin{proposition}
+Tout processus de Lévy est un processus de Feller.
+\end{proposition}
+
+\begin{proof}
+Sans perte de généralité, supposons que $X_{0}=0$. Montrons que $(X_{t})_{t\geq0}$ est un processus de Markov homogène. Soit $t\geq s \geq 0$ et $f\in B_{b}(\mathbb{R}^{d})$ alors 
+\begin{equation}\label{num3}
+\mathbb{E}(f(X_{t})|\mathcal{F}_{s})=\mathbb{E}(f(X_{t}-X_{s}+X_{s})|\mathcal{F}_{s})=g(X_{s})
+\end{equation}
+où $g(x)=\mathbb{E}(f(X_{t}-X_{s}+ x))=\int_{\mathbb{R}^{d}}{f(x+y)\mathbb{P}_{X_{t-s}}(dy)}$ pour tout $x\in\mathbb{R}^{d}$. De même, il est facile de vérifier que $$\mathbb{E}(f(X_{t})|X_{s})=g(X_{s}).$$ 
+Ceci montre que la propriété de Markov est vérifiée. Etant donné que le processus $(X_{t})_{t\geq0}$ est a accroissements stationnaires il est imédiat de remarquer qu'il est homogène. 
+\newline
+
+Soit $(T_{t})_{t\geq0}$ la famille de transition associée à notre processus. D'après (\ref{num3}), on a pour tous $f\in B_{b}(\mathbb{R}^{d})$, $x\in\mathbb{R}^{d} $, $t\geq 0$ et $s\geq0$:
+\begin{equation} \label{levy2}
+T_{t}f(x)=\mathbb{E}(f(X_{t+s})|X_{s}=x) = g(x) =\mathbb{E}(f(X_{t}+x)).
+\end{equation}
+
+Soit $f\in C_{0}(\mathbb{R}^{d})$, montrons que pour tout $t\geq 0, \, T_{t}f\in C_{0}(\mathbb{R}^{d})$.
+Soit $(x_{n})_{n\geq 1}$ une suite convergente vers $x\in\mathbb{R}^{d}$. Le théorème de convergence dominée donne:
+\begin{equation}\nonumber
+\begin{split}
+\lim_{n\rightarrow\infty} T_{t}f(x_{n})
+&=\lim_{n\rightarrow\infty}\int_{\mathbb{R}^{d}}{f(x_{n}+y)\mathbb{P}_{X_{t}}(dy)}\\
+&=\int_{\mathbb{R}^{d}}{f(x+y)\mathbb{P}_{X_{t}}(dy)}\\
+&=T_{t}f(x).\\
+\end{split}
+\end{equation}
+De même, on a
+\begin{equation} \nonumber
+\begin{split}
+\lim_{\left|x\right|\rightarrow\infty}\left|T_{t}f(x)\right|
+& \leq \lim_{\left|x\right|\rightarrow\infty}\int_{\mathbb{R}^{d}}{\left|f(x+y)\right|\mathbb{P}_{X_{t}}(dy)}\\
+& =\int_{\mathbb{R}^{d}}{\lim_{\left|x\right|\rightarrow\infty}\left|f(x+y)\right|\mathbb{P}_{X_{t}}(dy)}\\
+&=0.\\
+\end{split}
+\end{equation}
+On en déduit que $T_{t}f\in C_{0}(\mathbb{R}^{d})$.
+\newline
+
+Soit $f\in C_{0}(\mathbb{R}^{d})$. La continuité uniforme de $f$ donne que pour tout $\epsilon>0$, il existe un réel $r>0$ tel que pour tout $y\in B(0,r)$, $$\sup\limits_{x\in\mathbb{R}^{d}}\left|f(x+y)-f(y)\right|<\epsilon/2.$$
+On en déduit que pour tout $t>0$,
+\begin{align*}
+\left\|T_{t}f-f\right\|&=\sup_{x\in\mathbb{R}^{d}}\left|T_{t}f(x)-f(x)\right|\\
+&=\sup_{x\in\mathbb{R}^{d}}\left|\int_{\mathbb{R}^{d}}{f(x+y)-f(x)p_{t}(dy)}\right|\\
+&\leq \sup_{x\in\mathbb{R}^{d}}{\int_{B(0,r)}{\left|f(x+y)-f(x)\right| p_{t}(dy)}} + \sup_{x\in\mathbb{R}^{d}}{\int_{(B(0,r))^{c}}{\left|f(x+y)-f(x)\right| p_{t}(dy)}}\\
+&\leq\epsilon/2 + \sup_{x\in\mathbb{R}^{d}}\int_{(B(0,r))^{c}}{\left|f(x+y)-f(x)\right| p_{t}(dy)}.
+\end{align*}
+En faisant tendre $t$ vers $0$ dans cette inégalité et en appliquant le lemme \ref{précedant} on obtient que l'application $t\mapsto T_{t}$ est fortement continue en $0$.
+
+\end{proof}
+
+
+\section{Processus de Lévy à mesure de Lévy fini}
+
+Dans toute la suite, $(B_{t})_{t\geq 0}$ désignera un mouvement brownien standard à valeurs dans $\mathbb{R}^{d}$ i.e. le processus stochastique vérifiant:
+\begin{enumerate}[label=(\roman*)]
+\item $B_{0} = 0 $ p.s.
+
+\item $(B_{t})_{t\geq 0}$ est à accroissement indépendant.
+
+\item Pour tout $t\geq s\geq 0$, $B_{t}-B_{s}\sim \mathcal{N}(0,(t-s)I_{d})$, où $I_{d}$ désigne la matrice identité de $M_{d}(\mathbb{R}^{d})$. (i.e.  $B_{t}-B_{s}$ suit la loi normal de paramètres $0$ et $(t-s)I_{d}$. De plus, par convention $\mathcal{N}(0,0)=\delta_{0}$.)
+
+\item Pour tout $\omega\in\Omega$, l'application $t\mapsto B_{t}(\omega)$ est continue. 
+\end{enumerate}
+
+Il est évident que le mouvement brownien standard est un processus de Lévy. De plus, comme $B_{1}\sim \mathcal{N}(0,(t-s)I_{d})$, pour tout $u \in \mathbb{R}^{d}$ sa fonction caractéristique est
+\begin{equation} \nonumber 
+\Phi_{B_{1}}(u)= e^{-\frac{\left|u\right|^{2}}{2}}.
+\end{equation}
+
+On en déduit alors que le mouvement brownien standard est de symbole de Lévy donné pour tout $u\in \mathbb{R}^{d}$ par  $$\eta(u) = -\frac{\left|u\right|^{2}}{2}.$$
+
+\begin{definition}
+On appelle mouvement brownien avec drift le processus $(D_{t})_{t\geq 0}$ à valeurs dans $\mathbb{R}^{d}$ qui s'écrit sous la forme
+$$D_{t}=zt+\sigma B_{t}$$ 
+où $z\in\mathbb{R}^{d}$ et $\sigma\in M_{d}(\mathbb{R})$ vérifiant $A:= \sigma {}^\top \sigma ={}^\top \sigma \sigma$ et telle que $A$ soit définie positive. Ce processus est de Lévy et pour tout $u \in \mathbb{R}^{d}$ son symbole de Lévy est:
+ $$\eta(u)=i\prodscal{z}{u}-\frac{1}{2}\prodscal{Au}{u}.$$ 
+\end{definition}
+
+\begin{proposition}\label{drift}
+Soit $(X_{t})_{t\geq 0}$ un processus de Lévy de triplet $(A,b,\nu)$. Si $\nu=0$ alors $(X_{t})_{t\geq 0}$ est un mouvement brownien avec drift.
+\end{proposition}
+
+\begin{proof}
+Par définition, $(X_{t})_{t\geq 0}$ a pour symbole de Lévy pour tout $u \in \mathbb{R}^{d}$,
+$$\eta(u)=i\prodscal{z}{u}-\frac{1}{2}\prodscal{Au}{u}.$$ 
+Comme A est une matrice symétrique définie positive, il existe $\sigma\in M_{d}(\mathbb{R})$ vérifiant $\sigma {}^\top \sigma ={}^\top \sigma \sigma = A$. On en conclut que $(X_{t})_{t\geq 0}$ a la même loi que $(bt+\sigma B_{t})_{t\geq 0}$.
+
+\end{proof}
+
+On rappelle que le processus de Poisson $(N_{t})_{t\geq 0}$ d'intensité $\rho>0$ est un processus de Lévy à valeurs dans $\mathbb{N}$, croissant et tel que pour tout $t\geq 0$, $N_{t}$ suit la loi de Poisson de paramètre $\rho t$.
+
+\begin{definition}
+Soit $x\in\mathbb{R}^{d}$, un réel $\rho>0$ et $\mu$ une mesure de probabilité sur $\mathbb{R}^{d}$. On appelle processus de Poisson composé de paramètre $(\mu,\rho)$ le processus de Lévy $(Y_{t})_{t\geq 0}$ vérifiant pour tout $t\geq 0$: 
+$$Y_{t}=x+\sum\limits^{N_{t}}_{k=0}{Z_{k}}$$
+où $(N_{t})_{t\geq 0}$ est un processus de Poisson d'intensité $\rho$ et $(Z_{n})_{n\geq 1}$ une suite de variables aléatoires i.i.d de loi $\mu$ tels que $(N_{t})_{t\geq 0}$ et $(Z_{n})_{n\geq 1}$ sont indépendants. 
+\end{definition}
+\begin{proposition}
+Soit $(X_{t})_{t\geq 0}$ un processus de Lévy de triplet $(A,b,\nu)$ tel que $0<\nu(\mathbb{R}^{d})<\infty$. Alors $(X_{t})_{t\geq 0}=(Y_{t}+D_{t})_{t\geq 0}$ où $(D_{t})_{t\geq 0}$ est un mouvement brownien avec drift et $(Y_{t})_{t\geq 0}$ est un processus de Poisson composé de paramètre $(\frac{\nu}{\nu(\mathbb{R}^{d})},\nu(\mathbb{R}^{d}))$ indépendant de $(D_{t})_{t\geq 0}$.
+\end{proposition}
+\begin{proof}
+D'après la formule de Lévy-Khintchine, pour tout $u\in\mathbb{R}^{d}$ l'exposant de Lévy de $(X_{t})_{t\geq 0}$ est:
+$$\eta_{X}(u)= i\prodscal{b}{u} -\frac{1}{2}\prodscal{Au}{u} + \int_{\mathbb{R} ^{d}} [e^{i\prodscal{u}{y}} - 1 - i\prodscal{u}{y}\mathbf{1}_{B(0,1)}(y)] \nu(dy).$$
+Comme  $\nu(\mathbb{R}^{d})<\infty$, on a   
+$$\int_{B(0,1)}{\left|x\right|\nu(dx)}<\infty.$$
+On en déduit alors que 
+\begin{equation}\label{khitch}
+\eta_{X}(u)= i\prodscal{b_{D}}{u} -\frac{1}{2}\prodscal{Au}{u} + \int_{\mathbb{R} ^{d}} [e^{i\prodscal{u}{y}} - 1] \nu(dy)
+\end{equation}
+où
+$$b_{D}=b-\int_{B(0,1)}{y \, \nu(dy)}.$$
+D'autre part, $(Y_{t})_{t\geq0}$ a pour exposant de Lévy, 
+$$\eta_{Y}(u)=\nu(\mathbb{R}^{d})\int_{\mathbb{R}^{d}}{(e^{i\prodscal{x}{u}}-1)\frac{\nu(dx)}{\nu(\mathbb{R}^{d})}}$$
+pour tout $u\in\mathbb{R}^{d}$. La formule (\ref{khitch}) et la proposition \ref{drift}, nous permettent de conclure.
+
+\end{proof} 
+
+\section{Processus $\alpha$-stables}
+Soit $\mu$ une mesure de probabilité sur $\mathbb{R}^{d}$ et $X$ une variable aléatoire à valeurs dans $\mathbb{R}^{d}$.
+\begin{definition}
+On dit que $\mu$ est stable si pour tout $a>0$, il existe un réel $\gamma(a)>0$ et $\delta(a)\in \mathbb{R}^{d}$ tels que :
+
+$$(\Phi_{\mu}(u))^{a} = e^{i\prodscal{\delta(a)}{u}}\Phi_{\mu}(\gamma(a) u).$$
+
+On dit que $\mu$ est strictement stable si $\delta(a)=0 $ pour tout $a>0$. Une variable aléatoire X est dite (strictement) stable si sa loi est (strictement) stable.
+Par ailleurs, on remarque que toute mesure stable est infiniment divisible.
+\newline
+
+Un processus de Lévy $(X_{t})_{t\ge 0}$ à valeurs dans $\mathbb{R}^{d}$ est dit (strictement) stable, si pour tout $t>0$, $X_{t}$ est (strictement) stable. Il est évident que pour qu'un processus de Lévy soit stable, il suffit qu'il le soit pour un entier $t>0$.
+\end{definition}
+
+On rappelle qu'un processus stochastique $X=(X_{t})_{t\ge 0}$ à valeurs dans $\mathbb{R}^{d}$ est dit autosimilaire au sens large, si pour tout $a>0$ et $t \ge 0 $, il existe $b(a)>0$ et $c(t,a) \ge 0$ tels que 
+\begin{equation}\label{auto}
+(X_{at})_{t\ge 0} \overset{loi}{=} (b(a)X_{t}+ c(t,a))_{t\ge 0}.
+\end{equation}
+
+On dit que $X=(X_{t})_{t\ge 0}$ est autosimilaire si pour tout $t \ge 0$ et $a>0$, $c(t,a) = 0$.
+\newline
+
+Dans toute la suite, nous conserverons les notations $\gamma(a)$, $\delta(a)$, $b(a)$ et $c(t,a)$ utilisées dans ces définitions. 
+\begin{proposition}\label{autolarge}
+Un processus de Lévy $X=(X_{t})_{t\ge 0}$ à valeurs dans $\mathbb{R}^{d}$ est autosimilaire au sens large (respectivement autosimilaire) si et seulement s'il est stable (respectivement strictement stable).
+\end{proposition}
+\begin{proof}
+Supposons que $(X_{t})_{t\ge 0}$ est autosimilaire au sens large, alors pour tout $a >0$, les processus $(X_{at})_{t\ge 0}$ et $(b(a)X_{t}+ c(t,a))_{t\ge 0}$ ont même loi. Il est évident que ces deux processus sont de Lévy. On en déduit que:
+$$\Phi_{X_{a}}(u) =(\Phi_{X_{1}}(u))^{a} =\Phi_{bX_{t}+c(1,a)}(u) =\Phi_{X_{1}}(b(a)u + c(1,a)).$$ 
+Ceci montre que $X_{1}$ est stable.
+\newline
+
+Supposons que $(X_{t})_{t\ge 0}$ est stable alors pour tous $a>0$ et $u\in\mathbb{R}^{d}$:
+$$(\Phi_{X_{1}}(u))^{a} =\Phi_{\gamma(a)X_{t}+\delta(a)}(u).$$
+Les processus $(X_{at})_{t\ge 0}$ et $(\gamma(a)X_{t}+ t\delta(a))_{t\ge 0}$ sont de Lévy et on a pour tout $u\in\mathbb{R}^{d}$,
+$$\Phi_{X_{a}}(u)=(\Phi_{X_{1}}(u))^{a}.$$ 
+On en déduit que :
+$$(X_{at})_{t\ge 0}  \overset{loi}{=} (\gamma(a)X_{t}+ t\delta(a))_{t\ge 0}.$$
+\end{proof}
+\begin{theoreme}\label{stable}
+Soit $X=(X_{t})_{t\ge 0}$ un processus de Lévy stable à valeurs dans $\mathbb{R}^{d}$ tel que pour tout $t>0$, $X_{t}$ soit non triviale (i.e. la loi de $X_{t}$ est différent d'une mesure de Dirac). Alors pour tout $a>0$, $\gamma(a)$ est unique et il existe un unique $ \alpha \in ]0,2]$ vérifiant 
+$$\gamma(a) = a^{1/\alpha}.$$ 
+Le réel $\alpha$ est appelé indice de stabilité du processus.
+\end{theoreme}
+Pour démontrer ce théorème, nous avons besoin de plusieurs résultats préliminaires.
+\begin{lemme}
+Soit X une variable aléatoire à valeurs dans $\mathbb{R}^{d}$, non trivial et soit $b_{1}>0$, $b_{2}>0$, $c_{1}$ et $c_{2} \in \mathbb{R}^{d}$ tels que :  
+\begin{equation}\label{lemme1}
+b_{1}X +c_{1}\overset{loi}{=} b_{2}X + c_{2}.
+\end{equation} 
+Alors $b_{1}=b_{2}$ et $c_{1}=c_{2}$.
+\end{lemme}\label{lemme2}
+\begin{proof}
+L'égalité (\ref{lemme1}) nous donne que :
+$$X \overset{loi}{=} b_{2}^{-1}(b_{1}X + c_{1}-c_{2}).$$ 
+Supposons que $X \overset{loi}{=} bX+ c$ et montrons que $b = 1$ et $c =0$. Soit $X_{1}$ et $X_{2}$ des variables aléatoires indépendantes de même loi que X alors 
+$$X_{1}-X_{2} \overset{loi}{=} bX_{1}+c-bX_{2}-c \overset{loi}{=}b(X_{1}-X_{2}).$$
+Si $ 0\leq b<1$, on obtient pour tout $n \geq 1$:
+$$ b(X_{1}-X_{2}) \overset{loi}{=} b^{n}(X_{1}-X_{2}). $$ 
+En faisant tendre $n$ vers $\infty$, on obtient $b=0$. On en déduit alors que $(X_{1}-X_{2}) \overset{loi}{=} 0$. Ceci est impossible comme les variables aléatoires $X_{1}$ et $X_{2}$ sont indépendantes et non triviales. De même, pour tout $b>1$, 
+$$ \frac{1}{b}(X_{1}-X_{2}) \overset{loi}{=} \frac{1}{b^{n}}(X_{1}-X_{2}).$$
+Ceci montre que $b=1$. D'autre part, on a pour tout $n\geq 1$ 
+$$X \overset{loi}{=} X+ nc.$$ 
+On en déduit que $c=0$. 
+
+\end{proof}
+
+\begin{lemme}\label{lemme4}
+Soit $X=(X_{t})_{t\ge 0}$ un processus à valeurs dans $\mathbb{R}^{d}$, non trivial et autosimilaire au sens large. Alors pour tous $a>0 $ et $t\geq 0$, les réels $b(a)$ et $c(t,a)$ de l'égalité (\ref{auto}) sont uniques.
+\end{lemme}
+\begin{proof}
+Soit $a>0$, supposons pour tous $t\geq 0$, qu'il existe $b_{1}>0$, $b_{2}>0$, $c_{1}(t)$ et $c_{2}(t) \in\mathbb{R}^{d}$ vérifiant :
+$$(X_{at})_{t\ge 0}\overset{loi}{=} (b_{1}X_{t}+c_{1}(t))_{t\ge 0}\overset{loi}{=} (b_{2}X_{t}+c_{2}(t))_{t\ge 0}.$$ 
+Dans ce cas, le lemme \ref{lemme2} donne que pour tout $t \ge 0 $, $b_{1}=b_{2}$ et $c_{1}(t)=c_{2}(t)$.
+
+\end{proof}
+Grâce à la proposition \ref{autolarge} et au lemme \ref{lemme4}, il est facile de remarquer que pour tout $a>0$, $b(a)=\gamma(a)$ et que $c(t,a) = t\delta(a)$ pour tout $t\geq 0$. 
+\begin{lemme}
+Soit Z et W deux variables aléatoires à valeurs dans $\mathbb{R}^{d}$ non triviales. Supposons qu'il existe une suite de variables aléatoires $(Z_{n})_{n \ge 0}$  à valeurs dans $\mathbb{R}^{d}$, une suite de réels $(a_{n})_{n\ge0}$ et une suite $(b_{n})_{n\ge0}$ de $\mathbb{R}^{d}$ vérifiant:
+$$Z_{n}\overset{loi}{\rightarrow} Z \,\,\,\, \text{ et } \,\,\, \, a_{n}Z_{n}+ b_{n}\overset{loi}{\rightarrow} W.$$ 
+Alors il existe un réel $b$ et $c\in\mathbb{R}^{d}$ tels que:  
+$$b Z + c \overset{loi}{=} W.$$
+\end{lemme}
+ 
+\begin{proposition}\label{foncb}
+Soit l'application  $\gamma:a\mapsto \gamma(a)$ définie sur $]0,\infty[$ à valeurs dans $\mathbb{R}$. Elle vérifie les propriétés suivantes : 
+\begin{enumerate}[label=(\arabic*)]
+\item $\gamma(1) = 1$.
+
+\item Pour tout $ a>0$, $\gamma(a^{-1})=\gamma(a)^{-1}$. 
+
+\item Pour tous $a>0$ et $a'>0 $, $\gamma(aa')=\gamma(a)\gamma(a')$.
+
+\item Soit $(a_{n})_{n\ge 1}$ suite de réels strictements positifs tels qu'il existe un réel $ 0<a<\infty $ vérifiant $\lim\limits_{n\rightarrow \infty}a_{n} = a$ alors :
+$$\lim\limits_{n\rightarrow \infty}\gamma(a_{n}) = \gamma(a).$$
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Le lemme \ref{lemme4} montre que $\gamma$ est bien définie. Remarquons que la propriété $(1)$ est évidente. Étant donné que X est autosimilarité au sens large on a
+
+\begin{equation}\nonumber
+\gamma(a)X_{a^{-1}t}+a^{-1}t\delta(a) \overset{loi}{=} X_{t}. 
+\end{equation}
+On en déduit alors que $$X_{a^{-1}t}\overset{loi}{=} \gamma^{-1}(a)X_{t}- a^{-1}t \gamma^{-1}(a) \delta(a) \, \,\,\, \text{et} \,\, \, \, X_{a^{-1}t} \overset{loi}{=} \gamma(a^{-1})X_{t}+ \, m\delta(a).$$
+où $m$ est une constante réelle. Ceci prouve que la propriété $(2)$ est vérifiée. D'autre part, la propriété $(3)$ est vérifié, en effet on a
+\begin{equation}
+\begin{split}
+X_{aa't}\overset{loi}{=}\gamma(a)X_{a't}+a't\delta(a)\overset{loi}{=}\gamma(a)\gamma(a')X_{t}+ a't\delta(a)+\gamma(a)t\delta(a').\\
+\end{split}
+\end{equation}
+Montrons maintenant la propriété $(4)$. Soit $(a_{n})_{n\ge 1}$ suite de réels strictements positifs tels qu'il existe $ 0 < a <\infty $ vérifiant $\lim\limits_{n\rightarrow \infty}a_{n} = a$. On a pour tout $n \geq 1$:
+$$X_{a_{n}t}\overset{loi}{=}\gamma(a_{n})X_{t}+t\delta(a_{n}) \, \,\, \, \text{ et } \, \,\, \,  X_{a_{n}t}\overset{loi}{\rightarrow} X_{at}.$$ 
+Le lemme \ref{lemme4} nous permet de conclure que $(4)$ est vérifié.
+
+\end{proof}
+Dans tout la suite, pour toute mesure $\rho$ sur $\mathbb{R}^{d}$ et pour tout $r>0$, on note par $T_{r}\rho$ la mesure borélienne sur $\mathbb{R}^{d}$ vérifiant pour tout $B\in\mathcal{B}(\mathbb{R}^{d})$ :
+\begin{equation} \label{transform}
+(T_{r}\rho)(B)=\rho(r^{-1}B).
+\end{equation}
+\begin{proposition}\label{transformation}
+
+Soit $X=(X_{t})_{t\ge 0}$ un processus de Lévy de triplet $(A,b,\nu)$ alors le processus de Lévy $(a^{H} X_{t} + t\delta)_{t\ge 0}$ a pour triplet $(a^{2H}A,b(a),T_{a^{H}}\nu)$ avec $b(a) \in \mathbb{R}^{d}$.
+\end{proposition}
+
+\begin{proof}
+Calculons la fonction caractéristique de $a^{H} X_{1} + \delta$. Pour tout $u \in \mathbb{R}^{d}$
+\begin{equation}\nonumber
+\begin{split}
+\Phi_{a^{H} X_{1} + \delta}(u)=\mathbb{E}(e^{i\prodscal{a^{H} X_{1} + \delta}{u}})=e^{i\prodscal{\delta}{u}+ \eta(a^{H}u)}.
+\end{split}
+\end{equation}
+
+L'exposant de Lévy du processus $(a^{H} X_{t} + t\delta)_{t\ge 0}$ est
+\begin{equation} \nonumber
+\begin{split}
+i\prodscal{\delta}{u}+\eta(a^{H}u)
+&=i\prodscal{\delta}{u} + i\prodscal{b}{a^{H}u} -\frac{1}{2}\prodscal{Aa^{H}u}{a^{H}u} \\
+&+ \int_{\mathbb{R}^{d}} [e^{i\prodscal{a^{H}u}{y}} - 1 - i\prodscal{a^{H}u}{y}\mathbf{1}_{B(0,1)}(y)] \nu(dy)\\
+&= i\prodscal{ba^{H}+\delta a^{-H}}{u} -\frac{1}{2}\prodscal{A a^{2H}u}{u}\\
+&+ \int_{\mathbb{R}^{d}} [e^{i\prodscal{u}{y}} - 1 - i\prodscal{u}{y}\mathbf{1}_{B(0,1)}(y)] T_{a^{H}}(dy)+ i\prodscal{\beta}{u}\\
+\end{split}
+\end{equation}
+avec 
+\begin{equation} \nonumber
+\begin{split}
+\beta
+&=\int_{\mathbb{R}^{d}}{y \mathbf{1}_{B(0,1)}(y) T_{a^{H}}(dy)} -\int_{\mathbb{R}^{d}}{y \mathbf{1}_{B(0,1)}(y)\nu(dy)}.\\
+\end{split}
+\end{equation}
+En posant, pour tout $a>0$, $b(a) =  ba^{H}+\delta a^{-H} +\beta $, on obtient le triplet de Lévy du processus $(a^{H} X_{t} + t\delta)_{t\ge 0}$.
+
+\end{proof}
+
+\begin{proof}[Démonstration du théoreme \ref{stable}]
+Posons $H=1/\alpha$. Il suffit de montrer que pour tout $a>0$ on a $$\gamma(a)=a^{H}.$$ Tout d'abord, la proposition \ref{foncb} nous montre que la fonction $\gamma$ est une fonction continue sur $]0,\infty[$ telle que pour tous $a>0 , a'>0 $ :
+$$\gamma(aa')=\gamma(a)\gamma(a').$$
+Ceci nous permet d'affirmer qu'il existe $H \in \mathbb{R}$ vérifiant: 
+$$\gamma(a)=a^{H}.$$ 
+Il ne reste plus qu'à montrer que $H\ge 1/2$. Montrons d'abord que si $a>1$ alors $\gamma(a)>1$. Supposons que pour un réel $a>1$ on a $\gamma(a)\le 1$. Posons $t>0$ et $u\in \mathbb{R}^{d}$, étant donné que le processus $(X_{t})_{t\geq0}$ est autosimilaire au sens large on obtient pour tout entier relatif $n$,
+$$\Phi_{X_{a^{n}t}}(u) = \Phi_{X_{t}}(\gamma(a)^{n}u)e^{\prodscal{u}{t\delta(a^{n})}}.$$
+On en déduit que $\left|\Phi_{X_{a^{n}t}}(\gamma(a)^{-n}u)\right|=\left|\Phi_{X_{t}}(u)\right| $. D'autre part, comme $X_{0}$ est constante, $\left|\Phi_{X_{a^{n}t}}(u)\right|$ converge uniformement sur tout compact vers $1 $ quand $n\rightarrow-\infty$ (Voir \cite{ref5}). De plus, comme pour tout $n\le 0$ 
+$$\left|\gamma(a)^{-n}u\right|\le \left|u\right|$$ 
+on obtient que:
+$$0 \le 1-\left|\Phi_{X_{a^{n}t}}(\gamma (a)^{-n}u) \right| \le \underset{\left|z\right|\le\left|u\right|}{sup}(1-\left|\Phi_{X_{a^{n}t}}(z)\right|) \rightarrow 0$$
+quand $n\rightarrow-\infty$. On en déduit que $\left|\Phi_{X_{t}}(u)\right| =1$. Ceci montre alors que $X_{t}$ est constante. Comme on a supposé $X_{t}$ non trivial, on en déduit que $\gamma(a)>1$. Comme pour tout $a>0$, on a $\gamma(a)=a^{H}$, on remarque que $H>0$.
+\newline
+
+Soit $a>0$, supposons que le processus $X=(X_{t})_{t\ge 0}$ a pour triplet de Lévy $(A, b, \nu)$ alors $(X_{at})_{t\ge 0}$ a pour triplet $(aA,ab,a\nu)$ et la proposition \ref{transformation} nous permet d'affirmer que le processus de Lévy $(a^{H} X_{t} + t\delta)_{t\ge 0}$ a pour triplet $(a^{2H}A, b(a), T_{a^{H}}\nu)$ avec $b(a) \in \mathbb{R}^{d}$. De plus, on a 
+$$(X_{at})_{t\ge 0}\overset{loi}{=}(a^{H} X_{t} + t\delta)_{t\ge 0}.$$ 
+L'unicité du triplet de Lévy donne : 
+$$a^{2H}A = aA , \, \, \,\, \, ab =b(a) \, \,\, \,\,  \text{ et} \, \, \,\, a\nu=T_{a^{H}}\nu.$$
+Comme pour tout $t>0$, $X_{t}$ est non trivial, on a $A \neq 0$ ou $\nu \neq 0$. 
+\newline
+
+Pour $A \neq 0$, on obtient $H=1/2$. 
+\newline 
+
+Pour $\nu \neq 0$, nous remarquons que, pour tous $r_{1}>0$ , $r_{2}>0$, on a 
+
+$$T_{r_{1}}T_{r_{2}}\nu=T_{r_{1}r_{2}}\nu \, \,\, \,\text{et}  \, \,\, \,a^{-1}\nu=T_{a^{-H}}\nu.$$
+On en déduit que pour tout $n\in\mathbb{Z}$
+\begin{equation}\label{*}
+a^{n}\nu=T_{a^{Hn}}\nu.
+\end{equation}
+Pour $n \in \mathbb{Z}$ on définit l'ensemble : 
+$$S_{n}(a^{H})=\left\{x\in \mathbb{R}^{d}:a^{nH}<\left|x\right|\leq a^{(n+1)H}\right\}.$$
+On remarque que 
+$$S_{n}(a^{H})=a^{nH}S_{0}(a^{H})$$ et que 
+$$\nu(S_{n}(a^{H}))=(T_{a^{-nH}}\nu)(S_{0}(a^{H}))=a^{-n}\nu(S_{0}(a^{H})).$$
+D'autre part, il est facile de voir que
+\begin{equation}\label{boule}
+\bar{B}^{*}(0,1)=\left\{x\in\mathbb{R}^{d}, \, 0<\left|x\right|\leq 1\right\} = \bigcup\limits_{n = 1}^{\infty}{S_{-n-1}(a^{H})}
+\end{equation}
+et 
+$$\left\{x:\left|x\right|>1\right\}=\bigcup\limits_{n = 1}^{\infty}{S_{n}(a^{H})}.$$
+Comme $\nu(\{x:\left|x\right|>1\})<\infty$, on en déduit que $\nu(S_{0}(a^{N}))\neq 0$. L'égalité (\ref{*}) étant équivalente à : 
+$$a^{n}\int{\mathbf{1}_{B}(x) \nu(dx)}=\int{\mathbf{1}_{B}(a^{Hn}x)\nu(dx)}$$
+pour tout $B\in \mathcal{B}(\mathbb{R}^{d})$, on en déduit que pour tout fonction borélienne positive $f$: 
+\begin{equation}\label{etage}
+a^{n}\int{f(x) \nu(dx)}=\int{f(a^{Hn}x)\nu(dx)}. 
+\end{equation}
+ Ceci nous donne
+$$\int_{S_{n}(a^{H})}{\left|x\right|^{2}d\nu(dx)}=a^{-n(1-2H)}\int_{S_{0}(a^{H})}{\left|x\right|^{2}\nu(dx)}.$$
+Puisque $\nu$ vérifie : 
+$$\int_{\left|x\right|\le1}{\left|x\right|^{2}\nu(dx)}<\infty$$
+l'égalité (\ref{boule}) nous donne 
+$$\sum\limits_{n\le -1}{a^{-n(1-2H)}}<\infty.$$ 
+On en déduit que $(1-2H)<0$, ce qui montre que $H>1/2$.  
+
+\end{proof}
+\begin{remarque}
+On remarque que les processus stables d'un même indice $\alpha$ possèdent de nombreuses propriétés communes, nous parlerons alors pour chaque $\alpha\in ]0,2]$ de processus $\alpha$-stables. Par définition de la stabilité, un processus non trivial ne peut pas être à la fois $2$-stable et $\alpha$-stable avec $0<\alpha<2$. On a donc
+\begin{enumerate}[label=(\roman*)]
+\item $A\neq0$ et $\nu=0$ si et seulement si $(X_{t})_{t\geq 0}$ est 2-stable.
+\item $\nu\neq0$ et $A=0$ si et seulement si $(X_{t})_{t\geq 0}$ est $\alpha$-stable avec $0<\alpha<2$.
+\end{enumerate}
+D'autre part, la proposition \ref{drift} nous permet d'affirmer que les processus de Lévy 2-stables sont les mouvements browniens avec drift.
+\end{remarque} 
+\begin{theoreme}
+Soit $\mu$ une mesure de probabilité sur $\mathbb{R}^{d}$ infiniment divisible de triplet $(A,b,\nu)$ et $0<\alpha<2$ alors les propriétés suivantes sont équivalentes:
+\begin{enumerate}[label=(\roman*)]
+\item $\mu$ est $\alpha$-stable.
+
+\item  pour tout $a>0$, $\nu =a^{-\alpha}T_{a}(b)$ et $A=0$.
+
+\item $A=0$ et il existe une mesure finie $\lambda$ sur $S(0,1)$ telle que pour tout $B\in\mathcal{B}(\mathbb{R}^{d})$
+\begin{equation}\label{nuprime}
+\nu(B) = \int_{S(0,1)}{\lambda(d\xi)\int_{0}^{\infty}{\mathbf{1}_{B}(r\xi) \frac{dr}{r^{1+\alpha}}}}.
+\end{equation}
+
+\end{enumerate}
+\end{theoreme}
+\begin{proof}
+L'équivalence des propriétés $(i)$ et $(ii)$ a déja été prouvée dans la démonstration du théorème \ref{stable}.
+Supposons maintenant que la propriété $(ii)$ est vérifiée. Soit $E\subset]0,\infty[$ et $C\subset S(0,1)=\left\{x\in\mathbb{R}^{d}, \, \left|x\right|=1\right\}$. Soit l'ensemble $EC$ vérifiant:
+$$EC=\left\{x\in\mathbb{R}^{d}\backslash\{0\} , \left|x\right|\in E \, , \frac{x}{\left|x\right|} \in C \right\}.$$
+On définit alors la mesure borélienne sur la sphère unité notée $\lambda$ vérifiant pour tout $C\in\mathcal{B}(S(0,1))$ (ensemble des boréliens de la sphère unité):
+$$\lambda(C)=\alpha\nu(]1,\infty[C).$$ 
+Soit $\nu_{1}$ une mesure vérifiant l'équation (\ref{nuprime}). Alors $\nu_{1}$ est une mesure sur $\mathbb{R}^{d}$ telle que $\nu_{1}(\{ 0 \}) = 0$ et vérifiant pour tous $b>0$ et $C\in\mathcal{B}(S(0,1))$ :
+\begin{equation} \nonumber
+\begin{split}
+\nu_{1}(]b,\infty[C) 
+&=\lambda(C)\int_{b}^{\infty}{\frac{dr}{r^{1+\alpha}}}\\
+&= \frac{1}{\alpha b^{\alpha}}\lambda(C)\\
+&=\frac{1}{b^{\alpha}}\nu(]1,\infty[C)\\
+&=\nu(b]1,\infty[C)\\
+&=\nu(]b,\infty[C).\\
+\end{split}
+\end{equation}
+On en déduit que  $\nu = \nu_{1}$. De plus, par construction de la mesure $\lambda$, $(iii)$ implique $(ii)$.
+
+\end{proof}
+
+Ce théorème nous permet entre autre de déduire que pour toute fonction $f$ borélienne $\nu$-intégrable, on a :
+\begin{equation}\label{surface}
+\int_{\mathbb{R}^{d}}{f(x)\nu(dx)}=\int_{S(0,1)}{\lambda(d\xi)\int_{0}^{\infty}{f(r\xi) \frac{dr}{r^{1+\alpha}}}}.
+\end{equation}
+\begin{proposition}\label{finite}
+Soit $(X_{t})_{t\geq 0}$ un processus de Lévy $\alpha$-stable et $\nu$ la mesure de Lévy associée alors on a :
+\begin{enumerate}[label=(\roman*)]
+\item $\int_{\left|x\right|\leq 1}{\left|x\right|\nu(dx)}<\infty$ si et seulement si $\alpha<1$.
+\item $\int_{\left|x\right|> 1}{\left|x\right|\nu(dx)}<\infty$ si et seulement si $\alpha>1$.
+\end{enumerate} 
+\end{proposition}
+\begin{proof}
+Pour tout $n\in\mathbb{Z}$ et  $a>1$, nous considèrons l'ensemble $S_{n}(a^{1/\alpha})$ défini comme dans la démonstration du théorème \ref{stable}. D'après (\ref{etage}) et puisque $\nu(S_{n}(a^{1/\alpha})))=a^{-n}\nu(S_{0}(a^{1/\alpha}))$, on obtient que :
+$$\int_{S_{n}(a^{1/\alpha})}{\left|x\right|\nu(dx)}=a^{n\frac{(1-\alpha)}{\alpha}}\int_{S_{0}(a^{1/\alpha})}{\left|x\right|\nu(dx)}.$$
+D'autre part, 
+$$\nu(S_{0}(a^{1/\alpha})) \leq \int_{\nu(S_{0}(a^{1/\alpha}))}{\left|x\right|^{2}\nu(dx)}<\infty.$$
+Etant donné que $a^{1/\alpha}>1$, on en déduit  : 
+\begin{equation}\nonumber
+\begin{split}
+\int_{\left|x\right|\leq 1}{\left|x\right|\nu{dx}}<\infty
+&\Leftrightarrow \sum\limits_{n=1}^{\infty}\int{S_{-n-1}(a^{1/\alpha})}{\left|x\right|\nu{dx}}<\infty\\
+&\Leftrightarrow \sum\limits_{n=1}^{\infty}a^{(-n-1)\frac{(1-\alpha)}{\alpha}}<\infty\\
+&\Leftrightarrow \alpha<1.\\
+\end{split}
+\end{equation}
+De même, on vérifie que $\int_{\left|x\right|> 1}{\left|x\right|\nu(dx)}<\infty$ si et seulement si $\alpha>1$.
+
+\end{proof}
+\begin{theoreme} 
+Soit $0<\alpha<2$,  un processus $\alpha$-stable $(X_{t})_{t\geq0}$ et $\mu$ la loi de $X_{1}$. Si le processus est symétrique (i.e. pour tout $u\in\mathbb{R}^{d}$, on a $\phi_{\mu}(u)=\phi_{\mu}(-u)$ ) alors
+\begin{equation}\label{ere}
+\phi_{\mu}(u)=exp(-\int_{S(0,1)}{\left|\prodscal{u}{\epsilon}\right|^{\alpha}\lambda_{2}(d\epsilon))}
+\end{equation}
+où $\lambda_{2}$ est une mesure finie sur la sphère unité, non nulle et déterminée de manière unique par $\mu$. 
+
+\end{theoreme}
+\begin{proof}
+Soit $u\in\mathbb{R}^{d}$ et $\epsilon\in S(0,1)$. On a pour tout $0<\alpha<1$ (voir par exmeple \cite{ref5}), 
+\begin{equation}\label{premier}
+\int_{0}^{\infty}{(e^{ir\prodscal{u}{\epsilon}}-1)r^{-1-\alpha}dr}=c_{1}(\alpha)\left|\prodscal{u}{\epsilon}\right|^{\alpha}(1-c_{2}(\alpha)sgn(\prodscal{u}{\epsilon}))
+\end{equation} 
+ avec $c_{1}(\alpha)$ et $c_{2}(\alpha)$ des constantes dépendantes de $\alpha$ et sgn la fonction signe et pour tout $1<\alpha<2$ 
+\begin{equation} \label{deuxieme}
+\int_{0}^{\infty}{(e^{ir<u,\epsilon>}-1-ir)r^{-1-\alpha}dr}=c_{1}(\alpha)\left|\prodscal{u}{\epsilon}\right|^{\alpha}(1-c_{2}(\alpha)sgn(\prodscal{u}{\epsilon}))
+\end{equation} 
+avec $c_{1}(\alpha)$ et $c_{2}(\alpha)$ des constantes dépendantes de $\alpha$.
+\newline
+
+En appliquant l'égalité (\ref{surface}) à la formule de Lévy-Khintchine, (\ref{premier}) et (\ref{deuxieme}) donnent que pour $\alpha \neq 1$ et pour tout $u\in\mathbb{R}^{d}$ le symbole de Lévy $\eta$ du processus est  
+\begin{equation}
+\eta(u)=-\int_{S(0,1)}{\left|\prodscal{u}{\epsilon}\right|^{\alpha}(1-c_{2}(\alpha)sgn(<z,\epsilon>))\lambda_{2}(d\epsilon) + i\prodscal{\beta_{\alpha}}{u}}
+\end{equation}
+avec $\lambda_{2}$ est le produit de $\lambda$ par une constante et $\beta_{\alpha}\in\mathbb{R}^{d}$ dépendant de $\alpha$.
+\newline
+
+Soit $\alpha=1 , \, u\in\mathbb{R}^{d}$ et $\epsilon\in S(0,1)$. On a (voir par exemple \cite{ref5}) :
+\begin{equation}\label{troisieme}
+\int_{0}^{\infty}{(e^{ir\prodscal{u}{\epsilon}}-1-ir\prodscal{u}{\epsilon})r^{-2}dr}=-\frac{\pi}{2}\left|\prodscal{u}{\epsilon}\right|-i\prodscal{u}{\epsilon}ln(\left|\prodscal{u}{\epsilon}\right|)+i c_{1}\prodscal{u}{\epsilon}.
+\end{equation}
+
+En appliquant (\ref{surface}) à la formule de Lévy-Khintchine, l'égalité (\ref{troisieme}) donne que pour $\alpha = 1 $ et $u\in\mathbb{R}^{d}$ le symbole de Lévy $\eta$ du processus est :
+\begin{equation}
+\eta(u)=-\int_{S(0,1)}{\left|\prodscal{u}{\epsilon}\right|^{\alpha}+\frac{2}{\pi}i\prodscal{u}{\epsilon}ln(\left|\prodscal{u}{\epsilon}\right|)\lambda_{2}(d\epsilon) + i\prodscal{\beta_{1}}{u}}.
+\end{equation}
+Comme $\mu$ est symétrique, on obtient que $\eta(u)=\eta(-u)$. On en déduit que l'égalité (\ref{ere}) est vérifiée.
+
+\end{proof}
+
+\begin{definition}
+Une mesure $\mu$ sur $\mathbb{R}^{d}$ est invariante par rotation si pour toute matrice orthoganale $U\in M_{d}(\mathbb{R}^{d})$ et pour tout $B\in\mathcal{B}(\mathbb{R}^{d})$, $\mu(UB)=\mu(B)$. 
+\newline
+
+Un processus X est dit invariant par rotation (ou isotrope), s'il l'est pour tout $t\geq0$ et dans ce cas, on a UX et X ont même loi.
+\end{definition}
+\begin{remarque}
+Il est évident de voir qu'une mesure $\mu$ est invariante par rotation, si et seulement si, 
+$$\phi_{\mu}(u)=\phi_{\mu}(Uu)$$ pour tout $u\in\mathbb{R}^{d}$ et pour toute matrice orthoganale $U\in M_{d}(\mathbb{R}^{d})$. 
+\end{remarque}
+\begin{theoreme}\label{stablerota}
+Soit $0<\alpha \leq 2$. Une mesure $\mu$ sur $\mathbb{R}^{d}$ est $\alpha$-stable et invariante par rotation, si et seulement s'il existe une constante réelle $\sigma(\alpha)$ vérifiant pour tout $u\in\mathbb{R}^{d}$: 
+
+\begin{equation}\label{mica}
+\phi_{\mu}(u) = e^{-\sigma(\alpha) \left|u\right|^{\alpha}}.
+\end{equation}
+\end{theoreme}
+\begin{proof}
+Soit $0<\alpha<2$. L'égalité (\ref{ere}) nous donne pour tout $u\in \mathbb{R}^{d}$:
+
+$$\phi_{ \mu }(u)=exp(-\left|u\right|^{\alpha}\int_{S(0,1)}{\left|\prodscal{\frac{u}{\left|u\right|}}{x}\right|^{\alpha}\lambda(dx)}.$$
+
+De plus, $\frac{u}{\left|u\right|} \in S(0,1)$ pour tout $u\in\mathbb{R}^{d}$. On en déduit que    
+$$\sigma(\alpha , \epsilon)=\int_{S(0,1)}{\left|\prodscal{\epsilon}{x}\right|^{\alpha}\lambda(dx)}$$
+ est constante pour tout $\epsilon \in S(0,1)$ et pour tout $0<\alpha<2$ puisque la mesure $\mu$ est invariante par rotation.
+\newline
+
+Pour $\alpha=2$, on sait que la mesure $\mu$ est gaussienne. La fonction caractéristique du processus gaussien invariant par rotation vérifie bien (\ref{mica}).  La réciproque du théorème est, quand à elle, évidente. 
+
+\end{proof}
+On remarque que multiplier un processus $\alpha$-stable invariant par rotation ne change pas ses propriétés, nous parlerons du processus $\alpha$-stable invariant par rotation lorsque $\sigma(\alpha)=1$.
+
+\section{Générateur infinitésimal du processus $\alpha-$stable}
+Dans toute la suite, on note par $S(\mathbb{R}^{d})$ l'ensemble des fonctions à décroissance rapide définie sur $\mathbb{R}^{d}$ à valeurs dans $\mathbb{C}$. 
+\newline
+
+On rappelle que pour tous $f \in S(\mathbb{R}^{d})$ et $ x \in  \mathbb{R}^{d} $, la transformée de Fourrier de $f$ est définie par:
+$$\hat{f}(x)=\int_{\mathbb{R}^{d}}{(2\pi)^{-d/2}e^{-i\prodscal{x}{y}}f(y)dy}$$ 
+et la formule d'inversion de la transformée de Fourrier nous donne pour tout $g\in S(\mathbb{R}^{d})$ et $ x \in  \mathbb{R}^{d} $ :
+$$g(x)=\int_{\mathbb{R}^{d}}{(2\pi)^{-d/2}e^{i\prodscal{x}{y}}\hat{g}(y)dy}.$$ 
+ 
+\begin{definition}
+
+Soit A un opérateur linéaire défini sur $S(\mathbb{R}^{d})$ à valeurs dans $S(\mathbb{R}^{d})$. A est appelé opérateur pseudo-différentiel, s'il existe une fonction $\Lambda : \mathbb{R}^{d} \times \mathbb{R}^{d} \rightarrow \mathbb{C}$ telle que:
+$$Af(x) = (2\pi)^{-d/2} \int_{\mathbb{R}^{d}} {e^{i\prodscal{u}{x}} \Lambda(x,u)\hat{f}(u) du}$$ 
+pour toute fonction $f \in S(\mathbb{R}^{d})$ et tout $ x \in  \mathbb{R}^{d} $ tels que l'intégrale admet un sens. Dans ce cas, $\Lambda$ est appelé symbole de l'opérateur pseudo-différentiel A.
+\end{definition}
+En appliquant la formule de Lévy-Khintchine et celle de Fourrier inverse, on obtient le théorème suivant:
+
+\begin{theoreme}\label{theorem2}
+Soit $(X_{t})_{t\geq 0}$ un processus de Lévy, $(T_{t})_{t\geq 0}$ le semi-groupe de Feller associé, A son générateur infinitésimal agissant sur $D_{A} \subseteq C_{0}(\mathbb{R}^{d})$ et  de symbole de Lévy $\eta$ de triplet $(m, b ,\nu)$, avec $m=(m_{ij})_{1 \le i , j \le d}$ et $b=(b_{i})_{1\le i \le d}$. Alors on a:
+\begin{enumerate}[label=(\roman*)]
+\item Pour tous $t\ge0 $ et $u \in\mathbb{R}^{d}$, $T_{t}$ est un opérateur pseudo-différentiel de symbole $\Lambda(x,u) = e^{t\eta(u)}$.
+\item $S(\mathbb{R}^{d}) \subseteq D_{A} $ et  pour tout $u \in\mathbb{R}^{d}$, A est un opérateur pseudo-différentiel de symbole $\Lambda(x,u) = \eta(u)$. 
+\item Pour tous $f \in S(\mathbb{R}^{d})$ et $x\in\mathbb{R}^{d}$, on a
+\begin{equation}\nonumber
+\begin{split}
+Af(x) 
+&=\sum\limits_{i=1}^{d} b_{i} \partial_{i}f(x) + \frac{1}{2} \sum\limits_{i,j =1}^{d} a_{ij}\partial_{i}\partial_{j}f(x) \\
+& + \int_{\mathbb{R}^{d}}{ [f(x+y) - f(x) + \prodscal{\nabla f(x)}{ y} \mathbf{1}_{B(0,1)}(y)]\nu(dy)}.\\
+\end{split}
+\end{equation}
+\end{enumerate}
+\end{theoreme}
+\begin{lemme}\label{simple}
+Soit $(T_{t})_{t\geq 0}$ un semi-groupe fortement continu sur $C_{0}(\mathbb{R}^{d})$ et A son générateur infinitésimal agissant sur $D_{A}$. Si $f \in C_{0}(\mathbb{R}^{d}) \, ,\, g\in C_{0}(\mathbb{R}^{d})$ vérifiant :
+\begin{equation}\label{fort}
+\lim_{t\rightarrow 0}\frac{1}{t}(T_{t}f(x)-f(x)) = g(x)
+\end{equation}
+pour tout $x\in\mathbb{R}^{d}$ alors $f\in D_{A}$ et $Af=g$.
+\end{lemme}  
+Pour la démonstration de ce lemme se référer au livre de Sato \cite{ref5} page 209 lemme 31.7.
+
+
+\begin{proof}[Démonstration du théorème \ref{theorem2}.] 
+Soit  $f \in S(\mathbb{R}^{d})$ comme $\hat{f}$ est intégrable alors pour tous $t\geq 0$ et  $x \in  \mathbb{R}^{d} $ on a
+
+\begin{equation}\nonumber
+\begin{split}
+\int_{\mathbb{R}^{d}}{\mathbb{E}(\left|e^{i\prodscal{X_{t}}{y}}e^{i\prodscal{x}{y}}\hat{f}(y)\right|)dy} \leq \int_{\mathbb{R}^{d}}{\left|\hat{f}(y)\right|dy} < \infty.\\
+\end{split}
+\end{equation}
+En appliquant la formule d'inversion de la transformée de Fourrier et le théorème de Fubini, on obtient que pour tous $t\geq 0$ et $x \in \mathbb{R}^{d} $ 
+\begin{equation}\nonumber
+\begin{split}
+T_{t}f(x) 
+&=(2\pi)^{-d/2}\mathbb{E}(\int_{\mathbb{R}^{d}}{e^{i\prodscal{X_{t}+x}{y}}\hat{f}(y)}dy)\\
+&=(2\pi)^{-d/2}\int_{\mathbb{R}^{d}}{\mathbb{E}(e^{i\prodscal{X_{t}+x}{y}})\hat{f}(y)}dy\\
+&=(2\pi)^{-d/2}\int_{\mathbb{R}^{d}}{e^{t\eta(y)}e^{i\prodscal{x}{y}}\hat{f}(y)dy}.\\
+\end{split}
+\end{equation}
+Par suite, l'assertion $(i)$ est prouvée. Pour démontrer $(ii)$, on rappelle (voir \cite{ref2}) qu'il existe une constante $K>0$ vérifiant pour tout $u\in\mathbb{R}^{d}$ 
+$$\left|\eta(u)\right|\leq K(1+\left|u\right|^{2}).$$ 
+Ceci nous permet, en appliquant le théorème des accroissements finis et comme $(1+\left|u\right|^{2})\hat{f}(u)\in S(\mathbb{R}^{d})\subset L^{1}(\mathbb{R}^{d})$, d'obtenir : 
+\begin{equation}\nonumber
+\begin{split}
+\int_{\mathbb{R}^{d}}{\left|e^{i\prodscal{u}{x}}\frac{e^{t\eta(u)}-1}{t}\hat{f}(u)\right|du}
+&\leq\int_{\mathbb{R}^{d}}{\sup_{0\leq s\leq t}{\left|\eta(u) e^{t\eta(u)}\right|}\left|\hat{f}(u)\right|du}\\
+&\leq K \int_{\mathbb{R}^{d}}{(1+\left|u\right|^{2})\left|\hat{f}(u)\right|du}<\infty.\\
+\end{split}
+\end{equation}
+Le théorème de convergence dominée, le lemme \ref{simple} et l'assertion $(i)$ nous donne que pour tous $f \in  S(\mathbb{R}^{d})$ et $x \in  \mathbb{R}^{d}$ on a 
+\begin{equation}\label{dom}
+\begin{split}
+\lim_{t\rightarrow 0}\frac{1}{t}(T_{t}f(x)-f(x))
+&=(2\pi)^{-d/2}\lim_{t\rightarrow 0}\int_{\mathbb{R}^{d}}{e^{i\prodscal{u}{x}}\frac{e^{t\eta(u)}-1}{t}\hat{f}(u)du}\\
+&=(2\pi)^{-d/2}\int_{\mathbb{R}^{d}}{\lim_{t\rightarrow 0} \, e^{i\prodscal{u}{x}}\frac{e^{t\eta(u)}-1}{t}\hat{f}(u)du}\\
+&=(2\pi)^{-d/2}\int_{\mathbb{R}^{d}}{e^{\eta(u)}\hat{f}(u)du}.\\
+\end{split}
+\end{equation}
+Pour démontrer l'assertion $(iii)$, on applique la formule de Lévy-Khintchine à $(ii)$ et on obtient pour tout $x\in\mathbb{R}^{d}$  
+\begin{equation}\nonumber
+\begin{split}
+Af(x)
+& =(2\pi)^{-d/2}\int_{\mathbb{R}^{d}}{e^{i\prodscal{u}{x}}(i\prodscal{b}{u} -\frac{1}{2}\prodscal{Au}{u}}\\ 
+& +\int_{\mathbb{R} ^{d}} {[e^{i\prodscal{u}{y}} - 1 - i\prodscal{u}{y}\mathbf{1}_{B(0,1)}(y)]\nu(dy)})\hat{f}(u)du.\\
+\end{split}
+\end{equation}
+\end{proof}
+
+\begin{definition}
+Soit $0< \alpha \leq 2$ et $(X_{t})_{t\geq0}$ le processus de Lévy $\alpha$-stable invariant par rotation à valeurs dans $\mathbb{R}^{d}$. On appelle Laplacien fractionnaire son générateur infinitésimal que l'on note $\Delta^{\alpha/2}$.
+\end{definition}
+En utilisant les formules $(ii)$ et $(iii)$ du théorème \ref{theorem2}, on obtient pour tous $f \in  S(\mathbb{R}^{d})$, $x \in \mathbb{R}^{d}$ et $\alpha \in ]0,2[$:
+\begin{equation}\label{fractional laplacien}
+\Delta^{\alpha/2}f(x):= -(2\pi)^{-d/2} \int_{\mathbb{R}^{d}} {e^{\prodscal{u}{x}}\left|u\right|^{\alpha} \hat{f}(u) \mathbf{1}_{u\neq 0}du}.
+\end{equation}
+Lorsque $\alpha = 2 $ l'opérateur laplacien fractionnaire coincide avec l'opérateur laplacien classique.
+
+\chapter{Propriété de couplage des processus $\alpha$-stables}
+
+Le but de ce chapitre est d'examiner avec des méthodes probabilistes des propriétés de type Liouville associées aux fonctions $\alpha$-harmoniques. Plus précisement, nous présenterons une approche basée sur la propriété de couplage des processus $\alpha$-stables sur $\mathbb{R}^{d}$. Nous donnerons une condition suffisante pour qu'un processus de Lévy possède la propriété de couplage. 
+\section{Propriété de couplage}
+Soit $(\Omega,\mathcal{F},(\mathcal{F}_{t})_{t\geq0},\mathbb{P})$ un espace de probabilité filtré. Une variable aléatoire $T:\Omega \mapsto [0,\infty]$ est appelée $\mathcal{F}_{t}$-temps d'arrêt si pour tout $t\geq 0$,
+$$\{ T\leq t \} \in \mathcal{F}_{t}.$$
+On appelle tribu des évenements anterieurs à $T$ la tribu 
+$$\mathcal{F}_{T}=\left\{A \in \mathcal{F} , \, A \cap \{T\leq t \}\in \mathcal{F}_{t}, \, \forall t\geq 0 \right\}.$$
+Soit $X=(X_{t})_{t\geq0}$ un processus stochastique défini sur l'espace  $(\Omega,\mathcal{F},\mathbb{P})$ à valeurs dans $\mathbb{R}$ adapté à la filtration $(\mathcal{F}_{t})_{t\ge 0}$. On dit que $(X_{t})_{t\geq0}$ est une martingale par rapport à la filtration $(\mathcal{F}_{t})_{t\ge 0}$ si pour tous $t\geq s \geq 0$, $X_{t}$ est intégrable et $$\mathbb{E}(X_{t}|\mathcal{F}_{s})=X_{s}.$$
+Il est bien connu que tout mouvement brownien réel $(B_{t})_{t\geq0}$ défini sur $(\Omega,\mathcal{F},(\mathcal{F}_{t})_{t\geq0},\mathbb{P})$ est une martingale. En effet, comme le mouvement brownien est à accroissements indépendants alors pour tous $t\geq s \geq 0$,
+\begin{equation}\nonumber
+\begin{split}
+\mathbb{E}(B_{t}|\mathcal{F}_{s})
+&=\mathbb{E}(B_{t}-B_{s}+B_{s}|\mathcal{F}_{s})\\
+&=\mathbb{E}(B_{t}-B_{s})+ B_{s}\\
+&=B_{s}.\\
+\end{split}
+\end{equation}
+ 
+Pour un $\mathcal{F}_{t}$-temps d'arrêt $T:\Omega\rightarrow\mathbb{R}_{+}$, on définit la variable aléatoire $X_{T}:\Omega\rightarrow \mathbb{R}$ pour tout  $\omega \in \Omega$ par
+$$X_{T}(\omega)=X_{T(\omega)}(\omega).$$
+Le théorème suivant est le théorème d'arrêt de Doob. Pour une démonstration de ce théorème, le lecteur pourra se référer au livre de D. Applebaum \cite{ref2}.
+\begin{theoreme}\label{doob}
+Soit $(X_{t})_{t\geq0}$ une $\mathcal{F}_{t}$-martingale à trajectoires continues à droite et soit S et T deux temps d'arrêt bornés tels que $S\leq T$ presque surement. Alors $X_{T}$ et $X_{S}$ sont intégrables et on a:
+$$\mathbb{E}(X_{T}|\mathcal{F}_{S})=X_{S}.$$
+\end{theoreme}
+Dans toute la suite, $(X_{t})_{t\geq0}$ désigne un processus de Markov à valeurs dans $\mathbb{R}^{d}$. On suppose que $(X_{t})_{t\geq0}$ est normal et homogène.
+On définit l'opérateur $\beta$ vérifiant 
+$$\beta f(x)= \lim_{t\rightarrow0}\frac{\mathbb{E}(f(X_{t})|X_{0}=x) -f(x)}{t}$$
+pour tout $x\in\mathbb{R}^{d}$ et toute fonction borélienne $f:\mathbb{R}^{d}\rightarrow \mathbb{R}$ telle que cette limite existe. On note alors par $D_{\beta}$ l'ensemble de ces fonctions. 
+\begin{definition}
+Une fonction $f:\mathbb{R}^{d}\rightarrow \mathbb{R}$ est dite $\beta$-harmonique (ou X-harmonique) sur $\mathbb{R}^{d}$ si pour tout $x\in\mathbb{R}^{d}$
+$$\beta f(x)=0.$$ 
+\end{definition}
+
+Soit $(T_{t})_{t\geq 0}$ la famille de transition associée à $(X_{t})_{t\geq0}$ définie sur $B_{b}(\mathbb{R}^{d})$ et $\tilde{\beta}$ son générateur infinitésimal. Alors on $\beta=\tilde{\beta}$ sur $D_{\tilde{\beta}}=D_{\beta}\cap B_{b}(\mathbb{R}^{d})$. On définit l'ensemble 
+$$\mathcal{H}^{\beta}_{b}=\left\{f:\mathbb{R}^{d}\rightarrow \mathbb{R} \,\, \beta\text{-harmonique bornée sur} \, \mathbb{R}^{d}\right\}$$ 
+
+\begin{proposition}
+Soit l'ensemble 
+$$E=\left\{f\in B_{b}(\mathbb{R}^{d}): \, T_{t}f = f;  t\geq 0 \right\}.$$
+Alors $\mathcal{H}^{\beta}_{b} = E.$
+\end{proposition}
+\begin{proof}
+Il est évident que  $E\subset \mathcal{H}_{\beta}$. Réciproquement, soit $f\in\mathcal{H}_{\beta}$. Alors pour tout $x\in\mathbb{R}^{d}$, 
+$$\lim_{t\rightarrow 0}\frac{T_{t}f(x)-f(x)}{t}=0.$$ 
+Dans ce cas, pour tout $s>0$, 
+$$\lim_{t\rightarrow 0}\frac{T_{t+s}f(x)-T_{s}f(x)}{t}=0.$$
+Alors pour tout $x\in \mathbb{R}^{d}$ l'application définie sur $\mathbb{R}_{+}$ par $t \mapsto T_{t}f(x)$ est constante sur $\mathbb{R}_{+}$. Par suite, $T_{t}f=f$ pour tout $t\geq 0$, ce qui signifie que $f\in E$.
+
+\end{proof} 
+On a pour tous réels $0 \leq s \leq t$ et toute fonction $\beta$-harmonique bornée $f$,
+$$\mathbb{E}(f(X_{t})|\mathcal{F}_{s})=\mathbb{E}(f(X_{t})|X_{s})=T_{t}f(X_{s})=f(X_{s}).$$ 
+Cela nous permet d'observer que si $f$ est harmonique alors $(f(X_{t}))_{t\geq0}$ est une $\mathcal{F}_{t}$-martingale.
+\newline
+
+Il est bien connu que $\frac{1}{2}\Delta$ est le générateur infinitésimal associé au mouvement brownien standard $(B_{t})_{t\geq0}$ à valeurs dans $\mathbb{R}^{d}$. De plus, un fonction $f:\mathbb{R}^{d}\rightarrow\mathbb{R}$ est $\Delta$-harmoniques sur $\mathbb{R}^{d}$ si et seulement si $f\in C^{2}(\mathbb{R}^{d})$ et
+$$\Delta f(x)= 0 \,\,\, \text{pour tout} \, x\in\mathbb{R}^{d}.$$  Le théorème de Liouville classique dit que toute fonction $\delta$-harmonique bornée sur $\mathbb{R}^{d}$ est nécessairement constante (voir par exemple \cite{ref7}).
+\newline
+
+Dans la suite, une fonction $f$ de est dite $\alpha$-harmonique si elle est $\Delta^{\alpha/2}$-harmonique et on notera $\mathcal{H}_{\Delta^{\alpha/2}}$ par $\mathcal{H}_{\alpha}$. On signale que les fonctions $2$-harmoniques sont les fonctions $\delta$-harmoniques.
+\newline
+   
+Soit $(p_{t})_{t\geq0}$ la loi de transition du processus $(X_{t})_{t\geq 0}$  et soit $x$, $y\in \mathbb{R}^{d}$. On note par $(X^{x}_{t})_{t\geq 0}$ et $(X^{y}_{t})_{t\geq 0}$ les processus issus respectivement de $x$ et $y$ et possèdant les mêmes lois de transition que $(X_{t})_{t\geq 0}$, i.e. pour tout $t\geq0$, $X^{x}_{t}$ et $X^{y}_{t}$ ont respectivement pour loi $p_{t}(x,\cdot)$ et $p_{t}(y,\cdot)$. On appelle temps de couplage des processus $(X^{x}_{t})_{t\geq0}$ et $(X^{y}_{t})_{t\geq0}$ le temps d'arrêt $$T_{x,y} =\inf\left\{t>0; X^{x}_{t}=X^{y}_{t}\right\}.$$ 
+
+\begin{definition}
+On dit que le processus $X=(X_{t})_{t\geq 0}$ possède la propriété de couplage si pour tous $x$, $y\in \mathbb{R}^{d}$, $T_{x,y}$ est fini presque surement. 
+
+\end{definition}
+Le théorème suivant permet d'établir le lien entre la propriété de couplage et la propriété de Liouville. 
+\begin{theoreme}\label{couple}
+Soit $X=(X_{t})_{t\geq 0}$ un processus de Markov à trajectoires continues à droite. Si $X=(X_{t})_{t\geq 0}$ possède la propriété de couplage alors la propriété de Liouville a lieu. 
+\end{theoreme}
+\begin{proof}
+Soit $x$ et $y\in \mathbb{R}^{d}$ et soit une fonction $h$ X-harmonique bornée. Comme les processus $(X^{x}_{t})_{t\geq0}$ et $(X^{y}_{t})_{t\geq0}$ sont des processus de Markov ayant les mêmes lois de transition que $(X_{t})_{t\geq 0}$, il est évident que  $(h(X^{x}_{t}))_{t\geq0}$ et $(h(X^{y}_{t}))_{t\geq0}$ sont des martingales. Alors le théorème d'arrêt de Doob (Théorème \ref{doob}) donne que pour tout $t>0$ et pour tout temps d'arrêt fini $T$, on a
+\begin{equation}\label{doob2}
+h(x)=\mathbb{E}(h(X^{x}_{t\wedge T})) \,\,\,\, \text{et} \,\,\,\, h(y)=\mathbb{E}(h(X^{y}_{t\wedge T})).
+\end{equation}
+Supposons que la propriété de couplage est vérifiée. Soit $T =T_{x,y}$ le temps de couplage de $(X^{x}_{t})_{t\geq0}$ et $(X^{y}_{t})_{t\geq0}$. Alors (\ref{doob2}) donne pour tout $t>0$ 
+
+\begin{equation}\nonumber
+\begin{split}
+\left|h(x)-h(y)\right|
+&=\left|\mathbb{E}(h(X^{x}_{t\wedge T})-h(X^{y}_{t\wedge T}))\right|\\
+&\leq \left|\mathbb{E}((h(X^{x}_{t\wedge T})-h(X^{y}_{t\wedge T}))\mathbf{1}_{\{T\leq t\}})\right|+\left|\mathbb{E}((h(X^{x}_{t\wedge T})-h(X^{y}_{t\wedge T}))\mathbf{1}_{\{T> t\}})\right|\\
+&=\left|\mathbb{E}((h(X^{x}_{T})-h(X^{y}_{T}))\mathbf{1}_{\{T\leq t\}})\right|+\left|\mathbb{E}((h(X^{x}_{t})-h(X^{y}_{t}))\mathbf{1}_{\{T> t\}})\right|\\
+&=\left|\mathbb{E}((h(X^{x}_{t})-h(X^{y}_{t}))\mathbf{1}_{\{T> t\}})\right|\\
+&\leq \mathbb{E}(\left|h(X^{x}_{t})\right|\mathbf{1}_{\{T> t\}})+ \mathbb{E}(\left|h(X^{y}_{t})\right|\mathbf{1}_{\{T> t\}})\\
+& \leq 2 \left\|h\right\|_{\infty} \mathbb{P}(T> t).\\
+\end{split}
+\end{equation}
+En faisant tendre $t$ vers l'infini et comme $\mathbb{P}(T=\infty)=0$, on en déduit que $h(x) = h(y)$ pour tous $x, y \in \mathbb{R}^{d}$. Ce qui signifie que $h$ est constante. 
+
+\end{proof}
+Soit $\mathcal{M}(\mathbb{R}^{d})$ l'ensemble des mesures boréliennes bornées signées sur $\mathbb{R}^{d}$. On note par $\left\|.\right\|_{var}$ la norme en variation totale définie pour toute mesure $\mu\in\mathcal{M}(\mathbb{R}^{d})$ par
+$$\left\|\mu\right\|_{var}=\sup_{\underset{\left\|f\right\|\leq 1}{f\in B_{b}(\mathbb{R}^{d})}}\left|\mu(f)\right|$$
+où 
+$$\mu(f)=\int_{\mathbb{R}^{d}}{f\, d\mu}.$$
+Il est connu (voir par exemple \cite{ref5}) qu'il existe $H\in\mathcal{B}(\mathbb{R}^{d})$ tel que les applications  $$A\mapsto \mu_{+}(A)=\mu(A\cap H)\quad et \quad  A\mapsto\mu_{-}(A)=-\mu(A\cap H^{c})$$ sont des mesures positives sur $\mathcal{B}(\mathbb{R}^{d})$. En outre, 
+ $$\mu=\mu_{+} - \mu_{-} \quad \text{et} \quad  \left\|\mu\right\|_{var}=\mu_{+}(\mathbb{R}^{d}) + \mu_{-}(\mathbb{R}^{d}).$$
+Dans le cas où $\mu$ à une mesure de masse totale $0$, on a $\mu_{+}(\mathbb{R}^{d}) = \mu_{-}(\mathbb{R}^{d})$. En considérant $\mu_{1}$ et $\mu_{2}$ deux mesures de probabilité sur $\mathbb{R}^{d}$ et puisque $$\sup_{A\in\mathcal{B}(\mathbb{R}^{d})}\mu(A)=\mu(H)=\mu_{+}(\mathbb{R}^{d}),$$
+on aura alors 
+$$\left\|\mu_{1}-\mu_{2}\right\|_{var}= 2\sup_{A\in\mathcal{B}(\mathbb{R}^{d})}\left|\mu_{1}(A)-\mu_{2}(A)\right|.$$
+En notant par $\mu_{1}\wedge\mu_{2}= \mu_{1}-(\mu_{1}-\mu_{2})_{+}$ on a 
+\begin{equation}\label{infimes}
+\left\|\mu_{1}-\mu_{2}\right\|_{var}=2.(1-(\mu_{1}\wedge\mu_{2})(\mathbb{R}^{d})).
+\end{equation}
+
+\begin{theoreme}
+
+Le processus $(X_{t})_{t\geq0}$ satisfait la propriété de couplage, si et seulement si, pour tous $x, \, y \in \mathbb{R}^{d}$ : $$\lim_{t\rightarrow \infty}\left\|p_{t}(x,\cdot)-p_{t}(y,\cdot)\right\|_{var}=0.$$
+\end{theoreme}
+Pour la démonstration du théorème voir page $122$ du le livre de T. Lindvall \cite{ref15}.
+\newline
+
+Soit $S=(S_{t})_{t\geq0}$ un processus de Lévy à valeurs dans $\mathbb{R}$. $(S_{t})_{t\geq0}$ est appelé subordinateur si pour tout $\omega\in\Omega$, la fonction $t\mapsto X_{t}(\omega)$ est croissante sur $\mathbb{R}_{+}$. Le théorème suivant donne une condition nécéssaire et suffisante pour qu'un processus de Lévy soit un subordinateur.
+
+\begin{theoreme}
+Soit $(A, b, \nu)$ le triplet de Lévy associé à un processus de Lévy $(S_{t})_{t\geq0}$. Alors 
+$(S_{t})_{t\geq0}$ est croissant si et seulement si $A=0$, $\int_{-\infty}^{0}{\nu(dx)}=0$, $\int_{0}^{1}{x\,\nu(dx)}<\infty$ et $b\geq \int_{0}^{1}{x\,\nu(dx)}$.
+\end{theoreme} 
+Pour la démonstration de ce théorème voir Sato \cite[théorème 21.5]{ref5}.
+\newline
+
+Un subordinateur $(S_{t})_{t\geq0}$ a pour transformée de Laplace pour tout $u\geq 0$, (voir \cite{ref5}), 
+$$\mathbb{E}(e^{-u S_{t}})=exp\left[t\left(\int^{\infty}_{0}{(e^{-ux}-1)\nu(dx)}-b_{0}u\right)\right]$$
+avec $b_{0}=b -\int_{0}^{1}{x\nu(dx)}$. On note pour tout $u\geq 0$, $$\Psi(u)=\int^{\infty}_{0}{(e^{-ux}-1)\nu(dx)}-b_{0}u.$$ 
+La fonction $\Psi$ est appelée exposant de Laplace du processus.
+\newline
+
+Soit $L=(L_{t})_t\geq 0$ un processus de Lévy de symbole $\eta$ et de triplet $(A,b,\nu)$ et $S=(S_{t})_{t\geq0}$ un subordinateur d'exposant de Laplace $\Psi$. Supposons que $(L_{t})_{t\geq 0}$ et $(X_{t})_{t\geq0}$ sont indépendants. Le processus $X=(X_{t})_{t\geq0}=(L_{S_{t}})_{t\geq0}$ est appelé processus subordonné par rapport à $(X_{t})_{t\geq0}$.
+
+\begin{theoreme}\label{subordoné}
+Le processus $(X_{t})_{t\geq0}:=(L_{S_{t}})_{t\geq0}$ est un processus de Lévy et pour tout $u\in\mathbb{R}^{d}$, on a 
+$$\mathbb{E}(\exp(it\prodscal{X_{t}}{u}))=\exp(t\Psi(\eta(u))).$$
+\end{theoreme}
+\begin{proof}
+On note par $C_{b}(\mathbb{R}^{d})$ l'ensemble des fonctions continues bornées sur $\mathbb{R}^{d}$ à valeurs dans $\mathbb{R}$.
+Soit $f\in C_{b}(\mathbb{R}^{d})$ . Alors l'indépendance de $L$ et $S$ donne 
+$$\mathbb{E}(f(X_{t}))=\mathbb{E}(g(S_{t}))$$
+avec $g(s)=\mathbb{E}(f(L_{s}))$ pour tout $s\geq0$.
+\newline
+
+Soit $0\leq t_{1}< t_{2}$, alors
+$$\mathbb{E}(f(X_{t_{2}}-X_{t_{1}}))=\mathbb{E}(h(S_{t_{1}},S_{t_{2}}))$$
+avec $h(s_{1},s_{2})=\mathbb{E}(f(L_{t_{2}}-L_{t_{1}})).$ Comme $S$ est croissant et à accroissements stationnaires, on a pour tout $s_{1}\leq s_{2}$
+$$h(s_{1},s_{2})=g(s_{2}-s_{1}).$$
+On en déduit que 
+$$\mathbb{E}(f(X_{t_{2}}-X_{t_{1}}))= \mathbb{E}(g(S_{t_{2}}-S_{t_{1}})=\mathbb{E}(g(S_{t_{2}-t_{1}}))=\mathbb{E}(X{t_{2}-t_{1}}).$$
+Ce qui montre que $(X_{t})_{t\geq0}$ est à accroissements indépendants.
+\newline
+
+Soit $n\geq 1$, $f_{1},...,f_{n}$ des fonctions de $C_{b}(\mathbb{R}^{d})$ et soit $0\leq t_{1}<...<t_{n}$. Pour tout $1\leq j\leq n$, on définit de manière similaire à $g$ et $h$, les fonctions $g_{j}$ et $h_{j}$. Il est alors facile de vérifier que
+$$\mathbb{E}\left[\prod\limits^{n}_{j=1}{f_{j}(X_{t_{j+1}}- X_{t_{j}})}\right]=\mathbb{E}(G(Z_{t_{1}},...,Z_{t_{n}})),$$
+où
+$$G(s_{1},...,s_{n})=\mathbb{E}\left[\prod\limits^{n}_{j=1}{f_{j}(L_{t_{j+1}}- L_{t_{j}})}\right] \,\,\,\, \text{pour tous} \, 0\leq s_{1}<...<s_{n}.$$
+On en déduit que
+\begin{align*}\nonumber
+\mathbb{E}\left[\prod\limits^{n}_{j=1}{f_{j}(X_{t_{j+1}}- X_{t_{j}})}\right]&=\mathbb{E}\left[\prod\limits^{n}_{j=1}{h_{j}(S_{t_{j}}, S_{t_{j+1}})}\right]\\
+&=\mathbb{E}\left[\prod\limits^{n}_{j=1}{g_{j}(S_{t_{j+1}}- S_{t_{j}})}\right]\\
+&=\prod\limits^{n}_{j=1}{\mathbb{E}\left[g_{j}(S_{t_{j+1}}- S_{t_{j}})\right]}\\
+&=\prod\limits^{n}_{j=1}{\mathbb{E}\left[f_{j}(Y_{t_{j+1}}- Y_{t_{j}})\right]}.
+\end{align*}
+Ceci montre que $(X_{t})_{t\geq0}$ est à accroissement indépendant. Comme il est évident que $(X_{t})_{t\geq0}$ est càdlàg, On en déduit que $(X_{t})_{t\geq0}$ est un processus de Lévy. Pour tous $z\leq0$ et $t\geq 0$, l'exposant de Laplace de S vérifie
+$$\mathbb{E}(e^{zS_{t}})=\int_{0}^{\infty}{e^{zs}\, \mathbb{P}_{S_{t}}(ds)}=\exp(t\Psi(z)).$$
+Par conséquant, comme $(L_{t})_{t\geq0}$ et $(S_{t})_{t\geq0}$ sont indépendants,  on a pour tout $u\in\mathbb{R}^{d}$,
+$$\mathbb{E}(e^{i\prodscal{u}{X_{t}}})=\int_{0}^{\infty}{\mathbb{E}(e^{i\prodscal{u}{L_{s}}})\mathbb{P}_{S_{t}}(ds)}=\int_{0}^{\infty}{e^{s\eta(u)}\mathbb{P}_{S_{t}}(ds)}=\exp(t\Psi(\eta(u))).$$
+
+\end{proof}
+Nous allons maintenant nous intéresser  au subordinateur $\alpha/2$-stable avec $0<\alpha<2$. Il s'agit d'un processus de Lévy $(X_{t})_{t\geq0}$ strictement $\alpha/2$-stable et croissant. Un tel subordinateur existe. En effet, comme $0<\alpha/2<1$ la proposition $14$ nous donne que $\int_{0}^{1}{x\nu(dx)}<\infty$. De plus, d'après le théorème $8$, on a $A=0$. Il suffit alors de prendre un réel $b$ et une mesure de lévy $\nu$ tels que $b=\int_{0}^{1}{x\nu(dx)}$ et $\int_{-\infty}^{0}{\nu(dx)}=0$ pour pouvoir construire une subordinateur $\alpha/2$-stable.
+\newline
+
+L'équation (\ref{nuprime}) nous permet d'observer que pour tout $f$ $\nu$-intégrable:
+$$\int_{0}^{\infty}{f(x)dx}=\alpha\nu(]1,\infty[)\int_{0}^{\infty}{f(r)r^{-1-\alpha}dr}.$$
+
+En utilisant l'équation (\ref{premier}) et en prenant $f=e^{-u\cdot}-1$, on en déduit qu'il existe une constante $c>0$ tel que l'exposant de Laplace $\Psi$ du processus $(X_{t})_{t\geq0}$ vérifie pour tout $u\geq 0$ $$\Phi(u)=-cu^{\alpha/2}.$$
+Soit $(B_{t})_{t\geq0}$ le mouvement brownien à valeurs dans $\mathbb{R}^{d}$. Alors $(B_{X_{t}})_{t\geq0}$ est un processus $\alpha$-stable invariant par rotation. En effet, comme  $(B_{t})_{t\geq0}$ a pour symbole de Lévy $\eta(u)=-\frac{1}{2}\left|u\right|^{2}$  pour tout $u\in\mathbb{R}^{d}$, le théorème \ref{subordoné} nous permet d'affirmer que $(B_{X_{t}})_{t\geq0}$ à pour symbole de Lévy $-c\left\|u\right\|^{\alpha/2}$. On en déduit grâce au théorème \ref{stablerota} que $(B_{X_{t}})_{t\geq0}$ est $\alpha$-stable invariant par rotation.
+\newline
+
+Soit $x$ et $y$ $\in\mathbb{R}^{d}$ avec $x\neq y$, $(B^{x}_{t})_{t\geq0}$ le mouvement brownien issu de $x$ et soit l'hyperplan 
+$$H_{x,y}=\left\{u\in\mathbb{R}^{d}:\prodscal{u-(x+y)/2}{x-y}=0\right\}.$$
+L'application $R_{x,y}:\mathbb{R}^{d}\mapsto\mathbb{R}^{d}$ définie pour tout $z\in\mathbb{R}^{d}$ par
+$$R_{x,y}z=z-2\prodscal{z-(x+y)/2}{x-y}/\left|x-y\right|^{2}$$
+est la réflection par rapport à l'hyperplan $H_{x,y}$. 
+Soit le temps d'arrêt $$\tau_{x,y}=\inf\left\{t>0: B_{t}^{x}\in H_{x,y}\right\}$$ On définit  le processus $(\hat{B}_{t}^{y})_{t\geq0}$ vérifiant $$\hat{B}_{t}^{y}=
+\left\{
+	\begin{array}{ll}
+		R_{x,y}B_{t}^{x},  & \mbox{si} \,\, t\leq\tau_{x,y}; \\
+		B_{t}^{x}, & \mbox{si } \,  t > \tau_{x,y}.
+	\end{array}
+\right.$$
+
+Le processus $(\hat{B}^{y}_{t})_{t\geq0}$ correspond à la réflection de $(B^{x}_{t})_{t\geq0}$ par rapport à l'hyperplan $H_{x,y}$ avant $\tau_{x,y}$ et coincide avec $(B^{x}_{t})_{t\geq0}$ après. Le processus $(\hat{B}^{y}_{t})_{t\geq0}$ forme un mouvement brownien issu de $y$ (Voir \cite{ref19}). Il est alors évident que le temps de couplage des deux processus est $\tau_{x,y}$. Etant donné que le mouvement brownien possède la propriété de couplage (voir \cite{ref15}), on a $\tau_{x,y}<\infty$.
+\newline
+
+Soit $(S_{t})_{t\geq 0}$ un subordinateur. Montrons que le temps de couplage des processus $(B^{x}_{S_{t}})_{t\geq0}$ et $(\hat{B}^{y}_{S_{t}})_{t\geq0}$ est fini.
+Soit $$K_{x,y}=\inf\left\{t\geq 0: S_{t}\geq \tau_{x,y}\right\}.$$
+et soit le temps de couplage $$T_{x,y}=\inf\{t>0 : \hat{B}^{y}_{S_{t}}=B^{x}_{S_{t}}\}.$$
+Montrons que $K_{x,y}$ coincide avec le temps de couplage $T_{x,y}$ de $(B^{x}_{S_{t}})_{t\geq0}$ et  $(\hat{B}^{y}_{S_{t}})_{t\geq0}$. 
+\newline
+
+Posons $\omega\in\Omega$. Soit $t>0$ tel que $S_{t}\geq T_{x,y}$, i.e. $K_{x,y}\leq t$. Comme $\hat{B}_{t}^{y}=B_{t}^{x}$ pour tout $k\geq \tau_{x,y}$ alors $\hat{B}_{S_{t}}^{y}=B_{S_{t}}^{x}$. On a donc $T_{x,y}\leq t$ et puisque $t\geq K_{x,y}$ a été choisi arbitrairement, on obtient $T_{x,y}\leq K_{x,y}$. 
+\newline
+
+Reciproquement, supposons $K_{x,y}>0$. Par définition de la borne inférieure d'un ensemble, pour tout $\epsilon>0$, il existe $t_{\epsilon}>K_{x,y}-\epsilon$ et $S_{t_{\epsilon}}<T_{x,y}$. On aura alors $S_{N_{t_{\epsilon}}}^{\prime}\neq S_{N_{t_{\epsilon}}}^{\prime\prime}$, i.e. $\hat{B}_{t_{\epsilon}}^{y}\neq B_{t_{\epsilon}}^{x}$. Dans ce cas, on aura $T_{x,y}\geq t_{\epsilon}>K_{x,y}-\epsilon$. En faisant tendre $\epsilon$ vers $0$, on obtient $T_{x,y}\geq K_{x,y}$. Or $\tau_{x,y}$ est fini presque surement. Comme le subordinateur tend vers l'infini lorsque $t\rightarrow\infty$, il existe un temps $\tau_{0}(\omega)<0$ vérifiant $S_{t}(\omega)\geq \tau_{x,y}$ pour tout $t\geq\tau_{0}(\omega)$. Or par définition de $T_{x,y}$, on a $T_{x,y}\leq\tau_{0}<\infty$. 
+\newline
+
+Soit $0<\alpha< 2$, en ramplaçant, le subordinateur par le subordinateur strictement $\alpha/2$-stable, on en déduit que le processus $\alpha$-stable possède la propriété de couplage. Ce qui signifie que le laplacien fractionnaire possède la propriété de Liouville. 
+
+
+\section[Une condition suffisante pour le couplage des processus de Lévy]{Une condition suffisante pour le couplage des processus de Lévy%
+\sectionmark{Une condition suffisante pour le couplage ...}}
+\sectionmark{Une condition suffisante pour le couplage ...}
+Dans toute la suite, on note par $Z=(Z_{t})_{t\geq0}$ le processus de Poisson composé issu de $z\in\mathbb{R}^{d}$ de mesure de Lévy $\nu$. Pour tout $t\geq 0$,
+$$Z_{t}=z +\sum\limits_{k=1}^{N_{t}}Y_{k}$$ 
+avec $(N_{t})_{t\geq0}$ un processus de Poisson d'intensité $\lambda=\nu(\mathbb{R}^{d})$ et $(Y_{k})_{k\geq 1}$ i.i.d de même loi $\nu_{0}=\frac{\nu(\cdot)}{\lambda}$ et indépendant de $(N_{t})_{t\geq0}$. Il est connu (voir par exemple \cite{ref2}) que le générateur infinitésimal du processus de Poisson est pour tout $f\in B_{b}(\mathbb{R}^{d})$:
+$$Af(\cdot)=\lambda\int{(f(\cdot+u)-f(u))\nu_{0}(du)}.$$
+Pour tout $t\geq 0$ la loi de $Z_{t}$ est
+\begin{equation}\label{transipoiss}
+p_{t}:=e^{-\lambda t}\sum\limits_{k=0}^{\infty}\frac{(t\lambda)^{k}\nu_{0}^{*k}}{n!}.
+\end{equation}
+Dans toute la suite, on notera par $(S_{n})_{n\geq0}$ la marche aléatoire définie pour tout $n\geq 1$ par $S_{n}=\sum\limits_{k=1}^{n}Y_{k}$, $S_{0}=0$ et par $(p_{t}(z,\cdot))_{t\geq 0}$ la loi de transtion de $Z$.
+\begin{definition}
+Soit $\mu$ une mesure sur $\mathbb{R}^{d}$. On dit que $\mu$ possède une composante absolument continue si il existe une sous-mesure $\mu_{0}$ à densité $f_{0}$ vérifiant pour tout $A\in\mathcal{B}(\mathbb{R}^{d})$:
+$$\mu(A)\geq \mu_{0}(A)=\int_{A}{f_{0}(x) dx}.$$
+\end{definition} 
+Le lemme suivant s'appelle loi du zéro-deux, pour une démonstration de ce résultat voir l'article de T.Lindvall et L. Roger \cite{ref16}.
+\begin{lemme}[Loi du zéro-deux,  page 123]
+Soit $\mu$ une mesure de probabilité sur $\mathbb{R}^{d}$.
+Pour chaque $x\in\mathbb{R}^{d}$, on a l'une des proposition suivante: 
+\begin{enumerate}[label=(\roman*)]
+\item $\lim\limits_{n\rightarrow\infty} \left\|\delta_{x}\ast\mu^{\ast n}-\mu^{\ast n}\right\|_{var}=0$
+\item  pour tout $n\geq 1$, $\left\|\delta_{x}\ast\mu^{\ast n}-\mu^{\ast n}\right\|_{var}<2.$
+\end{enumerate}
+\end{lemme}
+\begin{proposition}\label{abscont}
+Soit $(S_{n})_{n\geq 0}$ une marche aléatoire. Pour tout $x\in \mathbb{R}^{d}$, $$\lim_{n\rightarrow\infty}\left\|\mathbb{P}(x+S_{n}\in\cdot)-\mathbb{P}(S_{n}\in\cdot)\right\|_{var}=0$$ si et seulement si il existe $m\geq1$, tel que $\mathbb{P}_{Y_{1}}^{\ast m}$ possède une composante absolument continue.
+\end{proposition}
+
+\begin{proof}
+Supposons qu'il existe $m\geq1$, tel que $\mathbb{P}_{Y_{1}}^{\ast m}$ possède une composante absolument continue. Soit $f$ la densité de la sous mesure de probabilité associée. Dans ce cas, comme $f$ est bornée, il existe une suite de fonctions continues bornées $(f_{n})_{n\geq 0}$ qui converge vers $f$. On aura alors pour tout $n\geq 0$:
+$$\left\|f_{n}\ast f-f^{\ast 2 }\right\|_{\infty}\leq \left\|f\right\|_{\infty}\left\|f_{n}-f\right\|_{1}.$$
+Comme la limite uniforme d'une fonction continue est continue, on obtient en passant à la limite que $f_{0}^{\ast 2}$ est continue. On en déduit que pour tous $n\geq 1$ et $x\in\mathbb{R}^{d}$, $P_{Y_{1}}^{\ast nm}$ et $\delta_{x}\ast P_{Y_{1}}^{\ast nm}$ possèdent des composantes absolument continues. En utilisant (\ref{infimes}), on obtient pour un $n\geq 1$ :
+$$\left\|\delta_{x}\ast \mathbb{P}_{Y_{1}}^{\ast n}-\mathbb{P}_{Y_{1}}^{\ast n}\right\|_{var}=\left\|\mathbb{P}(x+S_{n}\in\cdot)-\mathbb{P}(S_{n}\in\cdot)\right\|_{var}<2.$$
+La loi du zéro-deux donne directement que : 
+$$\lim_{n\rightarrow\infty}\left\|\mathbb{P}(x+S_{n}\in\cdot)-\mathbb{P}(S_{n}\in\cdot)\right\|_{var}=0.$$ 
+Supposons que pour tout $m\geq 1$, $\mathbb{P}_{Y_{1}}^{\ast m}$ ne possède pas de composante absolument continue.  Pour tout $n\geq 1$, on définit l'ensemble 
+$$\mathcal{X}_{n}=\{x\in\mathbb{R}^{d}; \left\|\mathbb{P}(x+S_{n}\in\cdot)-\mathbb{P}(S_{n}\in\cdot)\right\|_{var}<2\}.$$ 
+
+Soit pour tout $n\geq 1$ un ensemble borélien $B_{n}\in\mathcal{B}(\mathbb{R}^{d})$ de mesure de Lebesgue nulle vérifiant $\mathbb{P}_{Y_{1}}^{\ast n}(B_{n})=0$ et soit $f$ une densité de probabilité sur $\mathbb{R}^{d}$. Comme pour tout $x\in\mathbb{R}^{d}$, $\{B_{n}-x\}$ est de mesure de Lebesgue nulle, on a :
+$$\int{\delta_{a}\ast \mathbb{P}_{Y_{1}}^{\ast n}(B_{n}) f(a) da}=\int{\left(\int_{B_{n}-x}{f(a)da}\right)\mathbb{P}_{Y_{1}}^{\ast n}(dx)}= 0.$$
+On en déduit que $\delta_{x}=\mathbb{P}_{Y_{1}}^{\ast m}(B_{n})=0$ pour tout $x\in\mathbb{R}^{d}$ à l'exception d'un ensemble négligeable. Dans ce cas, $\left\|\mathbb{P}(x+S_{n}\in\cdot)-\mathbb{P}(S_{n}\in\cdot)\right\|_{var}=2$.
+\newline
+
+L'ensemble $\mathcal{X}_{n}$ est donc de mesure de Lebesgue nulle pour tout $n\geq 1$, on en déduit donc par la loi du zéro-deux que $$\lim_{n\rightarrow\infty}\left\|\mathbb{P}(x+S_{n}\in\cdot)-\mathbb{P}(S_{n}\in\cdot)\right\|_{var}=0$$ est vérifié pour tout $x\in\bigcup\limits_{n=1}^{\infty}\mathcal{X}_{n}$. Comme l'ensemble $\bigcup\limits_{n=1}^{\infty}\mathcal{X}_{n}$ est de mesure nulle, il existe $x\in\mathbb{R}^{d}$ tel que 
+$$\lim_{n\rightarrow\infty}\left\|\mathbb{P}(x+S_{n}\in\cdot)-\mathbb{P}(S_{n}\in\cdot)\right\|_{var}\neq 0.$$ 
+
+
+\end{proof}
+\begin{proposition} 
+ Pour tous $x,\,y \in \mathbb{R}^{d}$, on a :
+\begin{align*}\nonumber
+\left\|p_{t}(x,\cdot)-p_{t}(y,\cdot)\right\|_{var}&\leq e^{-\lambda}\sum\limits_{n=0}^{\infty}\frac{(\lambda t)^{n}}{n!}\left\|\mathbb{P}(x+S_{n}\in \cdot)-\mathbb{P}(y+S_{n}\in \cdot)\right\|_{var}.
+\end{align*}
+\end{proposition}
+\begin{proof}
+Soit $(T_{t})_{t\geq0}$ la famille de transition associée à Z. Soit $z\in\mathbb{R}^{d}$, on pose pour tout $n\geq 1$ et $f\in B_{b}(\mathbb{R}^{d})$; 
+$$Q_{n}f(z)=\mathbb{P}_{S_{n}+z}(f).$$
+On obtient alors grâce à (\ref{transipoiss}) :
+\begin{align*}\nonumber
+\left\|p_{t}(x,\cdot)-p_{t}(y,\cdot)\right\|_{var}&=\sup_{f\in B_{b}(\mathbb{R}^{d});\left\|f\right\|\leq 1}\left|T_{t}f(x)-T_{t}f(y)\right|\\
+&=e^{-\lambda t}\left|\sup_{f\in B_{b}(\mathbb{R}^{d});\left\|f\right\|\leq 1}\sum\limits_{k=0}^{\infty}\frac{(\lambda t)^{n}(\delta_{x}\ast\nu_{0}^{*n}(f)-\delta_{y}\ast\nu_{0}^{*n}(f))}{n!}\right|\\
+&=e^{-\lambda t}\left|\sup_{f\in B_{b}(\mathbb{R}^{d});\left\|f\right\|\leq 1}\sum\limits_{k=0}^{\infty}\frac{(\lambda t)^{n}(Q_{n}f(x)-Q_{n}f(y))}{n!}\right|\\
+&\leq e^{-\lambda t}\sum\limits_{k=0}^{\infty}\frac{(\lambda t)^{n}}{n!}\left|\sup_{f\in B_{b}(\mathbb{R}^{d});\left\|f\right\|\leq 1}(Q_{n}f(x)-Q_{n}f(y))\right|\\
+&\leq e^{-\lambda}\sum\limits_{n=0}^{\infty}\frac{(\lambda t)^{n}}{n!}\left\|\mathbb{P}(x+S_{n}\in \cdot)-\mathbb{P}(y+S_{n}\in \cdot)\right\|_{var}.
+\end{align*}
+
+\end{proof}
+\begin{proposition}\label{ineq1}
+Supposons que pour tous $x$, $y \in \mathbb{R}^{d}$, il existe une constante $C(x,y) >0$ telle que pour tout 
+$n\geq 1$:
+\begin{equation} \label{C1}
+\left\|\mathbb{P}(x+S_{n}\in \cdot)-\mathbb{P}(y+S_{n}\in \cdot)\right\|_{var}\leq \frac{C(x,y)}{\sqrt{n}}.
+\end{equation}
+Alors, on a:
+\begin{equation}\label{finalement}
+\left\|p_{t}(x,\cdot)-p_{t}(y,\cdot)\right\|_{var}\leq 2e^{-\lambda t}(1-\delta_{x,y})+\frac{\sqrt{2}C(x,y)(1-e^{-\lambda t})}{\sqrt{\lambda t}}
+\end{equation}
+avec $\delta_{x,y}$ le symbole de Kronecker.
+\end{proposition}
+\begin{proof}
+Soit $x$, $y \in \mathbb{R}^{d}$, il est évident que 
+$$\left\|\mathbb{P}(x+S_{0}\in \cdot)-\mathbb{P}(y+S_{0}\in \cdot)\right\|_{var}=\left\|\delta_{x}-\delta_{y}\right\|_{var}=2(1-\delta_{x,y}).$$
+D'après la proposition \ref{ineq1} et l'inégalité (\ref{C1}) on a : 
+\begin{equation}\label{ineq2}
+\left\|p_{t}(x,\cdot)-p_{t}(y,\cdot)\right\|_{var}\leq e^{-\lambda t}\left[2(1-\delta_{x,y})+ C(x,y)\sum\limits^{\infty}_{n=0}\frac{(\lambda t)^{n}}{n!\sqrt{n}}\right].
+\end{equation}
+De plus, l'inégalité de Jensen donne en utilisant la fonction concave $z\mapsto z^{1/2}$ :
+\begin{align*}\nonumber
+\sum\limits^{\infty}_{n=0}\frac{(\lambda t)^{n}}{n!\sqrt{n}} &\leq (e^{\lambda t}-1)\left(\frac{(\lambda t)^{n}}{n\cdot n!}\frac{1}{(e^{\lambda t}-1)}\right)^{1/2}\\
+&=\left(\frac{e^{\lambda t}-1}{\lambda t}\right)^{1/2}\left(\sum\limits_{n=1}^{\infty}\frac{(\lambda t)^{n+1}}{(n+1)!}\cdot\frac{n+1}{n}\right)^{1/2}\\
+&\leq \left(\frac{e^{\lambda t}-1}{\lambda t}\right)^{1/2}\sqrt{2}\left(e^{\lambda t} -1 -\lambda t\right)^{1/2}\\
+&\leq \frac{\sqrt{2}(e^{\lambda t} -1)}{\sqrt{\lambda t}}.
+\end{align*}
+En appliquant cette inégalité à (\ref{ineq2}), on obtient (\ref{finalement}).
+
+\end{proof}
+\begin{proposition}\label{marche}
+Si la marche aléatoire $S=(S_{n})_{n\geq 0}$ vérifie la propriété de couplage alors le processus de Poisson composé $(Z_{t})_{t \geq 0}$ la vérifie aussi. 
+\end{proposition}
+\begin{proof}
+Soit $\left(Y^{\prime\prime}_{k}\right)_{k\geq1}$ et $\left(Y^{\prime}_{k}\right)_{k\geq1}$ iid, de même loi que $(Y_{k})_{k\geq1}$ et indépendantes de $(N_{t})_{t\geq0}$.
+Supposons que S possède la propriété de couplage alors pour tous $x, \, y \in \mathbb{R}^{d}$, il existe deux marches aléatoires $S^{\prime}=\left(x+ \sum\limits_{k=1}^{n}Y^{\prime}_{k}\right)_{n\geq 0}$ et $S^{\prime\prime}=\left(y+\sum\limits_{k=1}^{n}Y^{\prime\prime}_{k}\right)_{n\geq0}$ telles que leur temps de couplage 
+$$T^{S}_{x,y}=\inf\{k\geq 1: S_{k}^{\prime} = S_{k}^{\prime\prime}\}<\infty.$$ Sans perte de généralité, on suppose que $S_{k}^{\prime}=S_{k}^{\prime\prime}$ pour tout $k\geq T^{S}_{x,y}$. On définit alors $\left(Z^{\prime}_{t}\right)_{t\geq0}$ et $\left(Z^{\prime\prime}_{t}\right)_{t\geq0}$ les processus de Poisson composés issus des marches aléatoires $S^{\prime}$ et $S^{\prime\prime}$. Pour montrer que Z possède la propriété de couplage montrons que le temps d'arrêt 
+$$T^{Z}_{x,y}=K_{x,y}=\inf\{t>0 : Z^{\prime}_{t}=Z^{\prime\prime}_{t}\}<\infty.$$
+On remarque que $T^{Z}_{x,y} =\inf\{t>0 : N_{t}\geq T_{x,y}^{S}\}$. En effet, soit $\omega\in\Omega$ fixé et $t>0$ tel que $N_{t}\geq T_{x,y}^{S}$, i.e. $K_{x,y}\leq t$. Comme $S^{\prime}_{k}=S^{\prime\prime}_{k}$ pour tout $k\geq T_{x,y}^{S}$ alors $S^{\prime}_{N_{t}}=S^{\prime\prime}_{N_{t}}$ et par construction $Z^{\prime}_{N_{t}}=Z^{\prime\prime}_{N_{t}}$. On en déduit que $T_{x,y}^{Z}\leq t$ et puisque $t\geq K_{x,y}$ a été choisi arbitrairement, on obtient $T^{Z}_{x,y}\leq K_{x,y}$. 
+\newline
+
+Reciproquement, supposons $K_{x,y}>0$. Par définition de la borne inférieure d'un ensemble, pour tout $\epsilon>0$, il existe $t_{\epsilon}<K_{x,y}-\epsilon$ et $N_{t_{\epsilon}}\leq T_{x,y}^{S}-1$. On aura alors $S_{N_{t_{\epsilon}}}^{\prime}\neq S_{N_{t_{\epsilon}}}^{\prime\prime}$, i.e. $Z_{t_{\epsilon}}^{\prime}\neq Z_{t_{\epsilon}}^{\prime\prime}$. Dans ce cas, on aura $T_{x,y}^{Z}\geq t_{\epsilon}>K_{x,y}-\epsilon$. En faisant tendre $\epsilon$ vers $0$, on obtient $T^{Z}_{x,y}\geq K_{x,y}$.
+\newline
+
+Finalement, comme $T_{x,y}^{S}$ est fini presque surement et comme le processus de Poisson tend vers l'infini quand $t\rightarrow\infty$ alors pour presque tout $\omega\in \Omega$, il existe $t_{0}(\omega)<\infty$ tel que $N_{t}(\omega) \geq T_{x,y}^{S}(\omega) $, pour tout $t\geq t_{0}(\omega)$. On en déduit directement que $T^{Z}_{x,y}\leq t_{0}(\omega)<\infty$. Ce qui démontre la proposition.
+
+\end{proof}
+
+Soit $(X_{t})_{t\geq0}$  un processus de Lévy de triplet $(A, b, \nu)$.
+On définit pour tout $\epsilon>0$ par $\nu_{\epsilon}$ la mesure vérifiant pour tout $B\in\mathcal{B}(\mathbb{R}^{d})$:
+\begin{equation}\nonumber
+  \nu_{\epsilon}(B)= 
+	\begin{cases}
+	\nu(B) \, &si \, \nu(\mathbb{R}^{d})<\infty;  \\
+	\nu\{z\in B:\left|z\right|>\epsilon\} \, &si \, \nu(\mathbb{R}^{d})=\infty. \\ 
+	\end{cases}
+	\end{equation}
+\begin{theoreme}\label{solu}
+Soit $X=(X_{t})_{t\geq0}$ un processus de Lévy de mesure de Lévy $\nu \neq 0$. Si il existe $l\geq 1$ et $\epsilon>0$, $\nu_{\epsilon}^{\ast l}$ possède une composante absolument continue alors X possède la propriété de couplage.
+\end{theoreme}
+
+\begin{proof}
+Tout d'abord supposons que $(X_{t})_{t\geq0}$ est de triplet $(0,0,\nu)$ avec $\nu(\mathbb{R}^{d})<\infty$. Dans ce cas le processus est un processus de Poisson composé. En conservant les notations utilisées précèdement, on considère la marche aléatoire $S= \left(\sum\limits_{k=1}^{n} Y_{k}\right)_{n\geq 0}$ telle que chacune des variables aléatoires i.i.d. $Y_{k}$ aient pour loi $\nu_{\epsilon}/\nu_{\epsilon}(\mathbb{R}^{d})$. D'après la proposition \ref{marche}, il suffit de montrer la propriété de couplage pour $S$ pour obtenir celle du processus de Poisson composé. Or la proposition \ref{abscont} donne que S possède la propriété de couplage si et seulement si il existe $l\geq1$ tel que $(\frac{\nu_{\epsilon}}{\nu_{\epsilon}(\mathbb{R}^{d})})^{\ast l}$ possède une composante absolument continue. Notre processus de Poisson composé possède donc la propriété de couplage.
+\newline
+
+Supposons maintenant que $(X_{t})_{t\geq0}$ ait pour triplet de Lévy $(A,b,\nu)$. Alors pour tout $t\geq 0$, on sépare $X_{t}$ en deux parties indépendantes $$X_{t}=X^{\prime}_{t}+X^{\prime\prime}_{t}$$ où $X^{\prime}=(X^{\prime}_{t})_{t\geq0}$ est le processus de Poisson composé de triplet $(0,0,\nu_{\epsilon})$ et  $X^{\prime\prime}=(X^{\prime\prime}_{t})_{t\geq0}$ le processus de triplet $(A,b,\nu-\nu_{\epsilon})$. Notons pour tout $t\geq0$, par $T^{\prime}_{t}$ et $T^{\prime\prime}_{t}$ les opérateurs de transition associés respectivement à $X^{\prime}$ et à $X^{\prime\prime}$ et $p_{t}^{\prime}$ et $p_{t}^{\prime\prime}$ leurs probabilités de transition. Il est évident dans ce cas de voir que $T_{t}=T^{\prime\prime}_{t}T^{\prime}_{t}$ et que $(T^{\prime\prime}_{t})_{t\geq0}$  forme un semigroupe de contraction sur $B_{b}(\mathbb{R}^{d})$. Dans ce cas, on a :
+\begin{align*}\nonumber
+\left\|p_{t}(x,\cdot)-p_{t}(y,\cdot)\right\|_{var}&= \sup_{\left\|f\right\|\leq 1}\left|T_{t}f(x)- T_{t}f(y)\right|\\
+&=\sup_{\left\|f\right\|\leq 1}\left|T^{\prime\prime}_{t}T^{\prime}_{t}f(x)- T^{\prime\prime}_{t}T^{\prime}_{t}f(y)\right|\\
+&\leq \sup_{\left\|f\right\|\leq 1}\left|T^{\prime}_{t}f(x)- T^{\prime}_{t}f(y)\right|\\
+&\leq \left\|p^{\prime}_{t}(x,\cdot)-p^{\prime}_{t}(y,\cdot)\right\|_{var}.
+\end{align*}
+Ce qui revient à vérifié que le processus de Poisson composé possède la propriété de couplage.
+
+\end{proof}
+
+\nocite{ref2}
+\nocite{ref3}
+\nocite{ref4}
+\nocite{ref5}
+\nocite{ref6}
+\nocite{ref7}
+\nocite{ref8}
+\nocite{ref9}
+\nocite{ref10}
+\nocite{ref11}
+\nocite{ref12}
+\nocite{ref13}
+\nocite{ref14}
+\nocite{ref20}
+\nocite{ref21}
+
+
+\bibliographystyle{abbrv} 
+\bibliography{bibmem}
+\end{document}
+
+
